@@ -14,6 +14,9 @@
     
     <script>
         // ===== ENCRYPTED SUPABASE CONFIG (XOR + Base64) =====
+        // Real credentials encrypted - decrypts to:
+        // URL: https://pexynuwrisrmivhyccep.supabase.co
+        // KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBleHludXdyaXNybWl2aHljY2VwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0NzQ2MjQsImV4cCI6MjA5MzA1MDYyNH0.8Zp6Kz0BSHKRWeq3UeIQz64nZH6PJEe-cwZbsmPmhTM
         const _SC = (() => {
             const k = 'STREAMER2026';
             const x = (s, k) => {
@@ -23,10 +26,11 @@
                 }
                 return r;
             };
-            const e = 'BQYLDg8JChAREhMUFRYXGBkaGxwdHh8gISIjJCUmJygpKissLS4vMDEyMzQ1Njc4OTo7PD0+P0BBQkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWltcXV5fYGFiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6e3x9fn+AgYKDhIWGh4iJiouMjY6PkA==';
+            const e = 'OyAmNTJ3an1CVUpPPSElNyg+Nz9bRlpPMDc3NW8+MCJTUlNFNnoxKiQ0DzpQd1FfHD0YDBQ3DGN8WXtFGjoAcCIODGR7W0JuBRcYfG8oPBhCUwF7Ohs7DzspHRBaaV9wKQ4BDDIEKxhealt/ZR08By0oDT5HVGpSKjUKCzgvEj4AUXpaOQ1gEzYELCVbU18PIA4BDHcEKBRHUgACOhgRDzEUHQNbf1hzYBooJnEDPwMAfVhnIB0/E3UuBhsEfVh3ZhkoBHAAAQtLfnoGfWwINXcGP2JwY3p9AQM3NHIYIBtjSgQCPQ4acxEHADcfU0VsMSc/FSwlER8=';
             const d = atob(e);
-            const u = x(d.slice(0, 43), k);
-            const a = x(d.slice(43), k);
+            const dec = x(d, k);
+            const u = dec.slice(0, 40);
+            const a = dec.slice(40);
             return { u, a };
         })();
         
@@ -36,8 +40,9 @@
         let supabaseClient = null;
         try {
             supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('✅ Supabase initialized');
         } catch(e) {
-            console.error('Supabase init failed:', e);
+            console.error('❌ Supabase init failed:', e);
         }
     </script>
     
