@@ -328,7 +328,7 @@
             <p class="mt-8 text-gray-700 text-xs">v6.0 Ultra Edition</p>
         </div>
     </div>
-
+    
     <!-- ===== MAIN SCREEN ===== -->
     <div id="main-screen" class="screen pb-24">
         <!-- Header -->
@@ -656,7 +656,7 @@
                     <button id="player-fav-btn" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition backdrop-blur-md">
                         <i class="far fa-heart text-sm"></i>
                     </button>
-                    <button id="player-share-btn" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition backdrop-blur-md">
+                    <button id="player-share-btn" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition backdroplur-md">
                         <i class="fas fa-share-alt text-sm"></i>
                     </button>
                 </div>
@@ -819,10 +819,10 @@
             <span>Profile</span>
         </button>
     </div>
-
+    
 <script>
 // ==========================================
-// STREAMER v6.0 ULTRA - JAVASCRIPT
+// STREAMER v6.0 ULTRA - JAVASCRIPT CORE
 // Anti-Hack | Secure Admin | Working Supabase
 // ==========================================
 
@@ -864,9 +864,6 @@
         popDone: false,
         
         // ===== SECURITY =====
-        _k: null,
-        _t: null,
-        _s: [],
         _h: false,
         
         // ===== INIT =====
@@ -881,21 +878,86 @@
             this.updateStats();
             this.renderSearchCats();
             
-            // Try Supabase
             await this._initSupa();
             
-            // Hide loader
             setTimeout(() => this._hideLoader(), 1500);
             
-            // Check URL param
             const p = new URLSearchParams(location.search).get('watch');
             if (p) setTimeout(() => this.playById(p), 2000);
             
-            // Watch timer
             setInterval(() => { this.watchMins++; this._saveLocal(); }, 60000);
-            
-            // Periodic save
             setInterval(() => this._saveLocal(), 30000);
+            
+            // Admin access methods setup
+            this._setupAdminAccess();
+        },
+        
+        // ===== ADMIN ACCESS METHODS =====
+        _setupAdminAccess() {
+            const self = this;
+            
+            // Method 1: Triple click on header STREAMER logo
+            const headerLogo = document.querySelector('h1');
+            if (headerLogo) {
+                let clickCount = 0;
+                let clickTimer = null;
+                headerLogo.addEventListener('click', function(e) {
+                    clickCount++;
+                    if (clickCount === 1) {
+                        clickTimer = setTimeout(() => { clickCount = 0; }, 800);
+                    }
+                    if (clickCount >= 3) {
+                        clearTimeout(clickTimer);
+                        clickCount = 0;
+                        console.log('Admin access triggered: Triple click');
+                        self.showAdminLogin();
+                    }
+                });
+            }
+            
+            // Method 2: Secret key combo - press "A" 5 times fast
+            let keyCount = 0;
+            let keyTimer = null;
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'a' || e.key === 'A') {
+                    keyCount++;
+                    if (keyCount === 1) {
+                        keyTimer = setTimeout(() => { keyCount = 0; }, 1000);
+                    }
+                    if (keyCount >= 5) {
+                        clearTimeout(keyTimer);
+                        keyCount = 0;
+                        console.log('Admin access triggered: Key combo');
+                        self.showAdminLogin();
+                    }
+                }
+            });
+            
+            // Method 3: Long press on version text (8 seconds)
+            const versionText = document.querySelector('#welcome-screen p.text-gray-700');
+            if (versionText) {
+                let pressTimer;
+                versionText.addEventListener('touchstart', function(e) {
+                    pressTimer = setTimeout(() => {
+                        console.log('Admin access triggered: Long press');
+                        self.showAdminLogin();
+                    }, 8000);
+                });
+                versionText.addEventListener('touchend', function() {
+                    clearTimeout(pressTimer);
+                });
+                versionText.addEventListener('mousedown', function(e) {
+                    pressTimer = setTimeout(() => {
+                        console.log('Admin access triggered: Long press');
+                        self.showAdminLogin();
+                    }, 8000);
+                });
+                versionText.addEventListener('mouseup', function() {
+                    clearTimeout(pressTimer);
+                });
+            }
+            
+            console.log('✅ Admin access methods: Triple-click logo / Press A 5x / Long-press version');
         },
         
         // ===== LOADER =====
@@ -938,7 +1000,6 @@
             const seed = `${year}-${month}-${day}-STREAMER-ADMIN`;
             const key = this._deriveKey(seed);
             
-            // Expected: username = "admin" + key.slice(0, 3), password = key + "!" + day
             const expectedU = 'admin' + key.slice(0, 3);
             const expectedP = key + '!' + day;
             
@@ -949,7 +1010,7 @@
         _initSecurity() {
             const self = this;
             
-            // 1. DevTools detection - multiple methods
+            // 1. DevTools detection
             let devtoolsOpen = false;
             const threshold = 160;
             
@@ -966,7 +1027,7 @@
                 }
             };
             
-            // 2. Debugger trap with timing
+            // 2. Debugger trap
             const debuggerTrap = () => {
                 const start = performance.now();
                 debugger;
@@ -976,7 +1037,7 @@
                 }
             };
             
-            // 3. Console manipulation detection
+            // 3. Console detection
             const checkConsole = () => {
                 const el = new Image();
                 el.__defineGetter__('id', () => {
@@ -986,7 +1047,7 @@
                 console.log('%c', el);
             };
             
-            // 4. Right-click on protected areas
+            // 4. Right-click block
             document.addEventListener('contextmenu', e => {
                 if (e.target.closest('.dm-player') || e.target.closest('.poster-wrap') || e.target.closest('#admin-wrap')) {
                     e.preventDefault();
@@ -995,7 +1056,7 @@
                 }
             }, true);
             
-            // 5. Keyboard shortcuts block
+            // 5. Keyboard block
             document.addEventListener('keydown', e => {
                 const blocked = [
                     e.key === 'F12',
@@ -1035,7 +1096,7 @@
                 }
             }, true);
             
-            // 8. Anti-copy on player
+            // 8. Anti-copy
             document.addEventListener('copy', e => {
                 if (e.target.closest('.dm-player')) {
                     e.preventDefault();
@@ -1043,15 +1104,14 @@
                 }
             });
             
-            // 9. Source protection
+            // 9. Console clear
             setInterval(() => {
                 console.clear();
                 console.log('%c⚠️ PROTECTED SYSTEM', 'color: red; font-size: 24px; font-weight: bold;');
                 console.log('%cUnauthorized access is strictly prohibited.', 'color: orange; font-size: 14px;');
-                console.log('%cAll attempts are logged and monitored.', 'color: yellow; font-size: 12px;');
             }, 5000);
             
-            // 10. Tamper detection
+            // 10. Fetch interceptor
             const origFetch = window.fetch;
             window.fetch = function(...args) {
                 const url = args[0]?.toString() || '';
@@ -1062,7 +1122,6 @@
                 return origFetch.apply(this, args);
             };
             
-            // Run checks
             setInterval(checkDevTools, 1000);
             setInterval(debuggerTrap, 2000);
             setInterval(checkConsole, 3000);
@@ -1083,14 +1142,12 @@
             this._h = true;
             this.toast('⚠️ Security Alert: Unauthorized access detected!', 'err');
             
-            // Disable admin if active
             if (this.isAdmin) {
                 this.isAdmin = false;
                 this.hideAdmin();
                 this.toast('Admin access revoked due to security violation', 'err');
             }
             
-            // Scramble video
             const fr = document.getElementById('dm-frame');
             if (fr) fr.src = 'about:blank';
             
@@ -1099,6 +1156,8 @@
         
         // ===== EVENT BINDING =====
         _bindEvents() {
+            const self = this;
+            
             // Welcome screen
             document.getElementById('start-btn')?.addEventListener('click', () => this.guestLogin());
             
@@ -1121,7 +1180,6 @@
             document.getElementById('admin-login-btn')?.addEventListener('click', () => this.adminLogin());
             document.getElementById('admin-hide-btn')?.addEventListener('click', () => this.hideAdmin());
             
-            // Admin modal close on backdrop
             document.getElementById('admin-modal')?.addEventListener('click', (e) => {
                 if (e.target === document.getElementById('admin-modal')) this.closeAdmin();
             });
@@ -1260,6 +1318,7 @@
                     return;
                 }
                 this.supReady = true;
+                console.log('✅ Supabase connected');
                 await this._authSupa();
                 await this._loadSupa();
             } catch(e) {
@@ -1533,7 +1592,6 @@
                 </tr>
             `).join('');
             
-            // Bind edit/delete buttons
             tb.querySelectorAll('.edit-btn').forEach(btn => {
                 btn.addEventListener('click', () => this.editContent(btn.dataset.id));
             });
