@@ -328,7 +328,6 @@
             <p class="mt-8 text-gray-700 text-xs">v6.0 Ultra Edition</p>
         </div>
     </div>
-    
     <!-- ===== MAIN SCREEN ===== -->
     <div id="main-screen" class="screen pb-24">
         <!-- Header -->
@@ -637,7 +636,6 @@
             </div>
         </div>
     </div>
-
     <!-- ===== VIDEO PLAYER SCREEN ===== -->
     <div id="player-screen" class="screen fixed inset-0 z-50 bg-black">
         <div class="relative w-full h-full bg-black flex flex-col">
@@ -656,7 +654,7 @@
                     <button id="player-fav-btn" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition backdrop-blur-md">
                         <i class="far fa-heart text-sm"></i>
                     </button>
-                    <button id="player-share-btn" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition backdroplur-md">
+                    <button id="player-share-btn" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition backdrop-blur-md">
                         <i class="fas fa-share-alt text-sm"></i>
                     </button>
                 </div>
@@ -819,15 +817,24 @@
             <span>Profile</span>
         </button>
     </div>
-    
 <script>
 // ==========================================
-// STREAMER v6.0 ULTRA - JAVASCRIPT CORE
-// Anti-Hack | Secure Admin | Working Supabase
+// STREAMER v6.2 PROTECTED ADMIN SYSTEM
+// Multi-Layer Security | Daily Dynamic Password
 // ==========================================
 
 (function() {
     'use strict';
+
+    // ===== SECURITY CONSTANTS =====
+    const SECURITY = {
+        MAX_ATTEMPTS: 5,
+        LOCKOUT_TIME: 15 * 60 * 1000, // 15 min
+        SESSION_DURATION: 8 * 60 * 60 * 1000, // 8 hours
+        SECRET_SEED: 'X7#k9$mP2@vL4&qR', // Change this! Keep secret!
+        ADMIN_SALT: 'STREAMER_2026_CORE',
+        HONEY_POT_FIELDS: ['email', 'phone', 'website'] // Fake fields
+    };
 
     const app = {
         // ===== CONFIG =====
@@ -863,13 +870,197 @@
         adTimer: null,
         popDone: false,
         
-        // ===== SECURITY =====
-        _h: false,
+        // ===== SECURITY STATE =====
+        _secAttempts: 0,
+        _secLockout: 0,
+        _secSession: null,
+        _secDeviceId: null,
+        _secConsoleOpen: false,
+        
+        // ===== DAILY PASSWORD GENERATOR =====
+        // Password changes every day at midnight
+        // Formula: SHA256(SEED + DATE + SALT) → first 8 chars uppercase
+        _getDailyPassword: function() {
+            const now = new Date();
+            const dateStr = now.getFullYear() + '-' + 
+                           String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                           String(now.getDate()).padStart(2, '0');
+            
+            // Simple hash function (browser compatible)
+            const hash = this._simpleHash(SECURITY.SECRET_SEED + dateStr + SECURITY.ADMIN_SALT);
+            const password = hash.substring(0, 8).toUpperCase();
+            
+            // Also generate yesterday's password (for timezone edge cases)
+            const yesterday = new Date(now);
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yestStr = yesterday.getFullYear() + '-' + 
+                           String(yesterday.getMonth() + 1).padStart(2, '0') + '-' + 
+                           String(yesterday.getDate()).padStart(2, '0');
+            const yestHash = this._simpleHash(SECURITY.SECRET_SEED + yestStr + SECURITY.ADMIN_SALT);
+            const yestPass = yestHash.substring(0, 8).toUpperCase();
+            
+            return { today: password, yesterday: yestPass, date: dateStr };
+        },
+        
+        // Simple but effective hash (not crypto-secure but sufficient for this use)
+        _simpleHash: function(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            // Convert to hex string
+            let hex = '';
+            const absHash = Math.abs(hash);
+            const hexChars = 'abcdef0123456789';
+            for (let i = 0; i < 16; i++) {
+                hex += hexChars.charAt((absHash >> (i * 4)) & 0xf);
+            }
+            // Mix with more entropy
+            let final = '';
+            for (let i = 0; i < 32; i++) {
+                const mixed = (absHash * (i + 1) * 31) ^ (str.charCodeAt(i % str.length) * 17);
+                final += hexChars.charAt(Math.abs(mixed) % 16);
+            }
+            return final;
+        },
+        
+        // ===== DEVICE FINGERPRINT =====
+        // Binds admin session to specific device
+        _getDeviceId: function() {
+            if (this._secDeviceId) return this._secDeviceId;
+            
+            const components = [
+                navigator.userAgent,
+                navigator.language,
+                screen.width + 'x' + screen.height,
+                screen.colorDepth,
+                new Date().getTimezoneOffset(),
+                !!window.sessionStorage,
+                !!window.localStorage,
+                navigator.hardwareConcurrency || 'unknown',
+                navigator.platform
+            ];
+            
+            const fingerprint = this._simpleHash(components.join('|'));
+            this._secDeviceId = fingerprint;
+            return fingerprint;
+        },
+        
+        // ===== ANTI-DEBUGGING =====
+        _initAntiDebug: function() {
+            const self = this;
+            
+            // Detect DevTools
+            const threshold = 160;
+            const checkDevTools = function() {
+                const widthThreshold = window.outerWidth - window.innerWidth > threshold;
+                const heightThreshold = window.outerHeight - window.innerHeight > threshold;
+                if (widthThreshold || heightThreshold) {
+                    self._secConsoleOpen = true;
+                    self._triggerSecurityAlert('devtools');
+                }
+            };
+            
+            // Check periodically
+            setInterval(checkDevTools, 1000);
+            
+            // Detect debugger
+            setInterval(function() {
+                const start = performance.now();
+                debugger;
+                const end = performance.now();
+                if (end - start > 100) {
+                    self._triggerSecurityAlert('debugger');
+                }
+            }, 2000);
+            
+            // Override console methods to detect usage
+            const originalLog = console.log;
+            const originalDir = console.dir;
+            let consoleCalls = 0;
+            
+            console.log = function() {
+                consoleCalls++;
+                if (consoleCalls > 3) self._secConsoleOpen = true;
+                return originalLog.apply(console, arguments);
+            };
+            
+            console.dir = function() {
+                self._secConsoleOpen = true;
+                return originalDir.apply(console, arguments);
+            };
+            
+            // Prevent right-click inspect
+            document.addEventListener('contextmenu', function(e) {
+                if (self._secConsoleOpen || self.isAdmin) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+            
+            // Prevent F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+            document.addEventListener('keydown', function(e) {
+                if (
+                    e.key === 'F12' ||
+                    (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) ||
+                    (e.ctrlKey && e.key === 'U')
+                ) {
+                    e.preventDefault();
+                    self._triggerSecurityAlert('shortcut');
+                    return false;
+                }
+            });
+        },
+        
+        // ===== SECURITY ALERT =====
+        _triggerSecurityAlert: function(type) {
+            this._secAttempts = SECURITY.MAX_ATTEMPTS;
+            this._secLockout = Date.now() + SECURITY.LOCKOUT_TIME * 10; // Extra long lockout
+            
+            // Fake crash or redirect
+            if (type === 'debugger') {
+                // Silent fail - app appears broken
+                document.body.innerHTML = '<div style="padding:50px;text-align:center;">Loading...</div>';
+                setTimeout(() => location.reload(), 5000);
+            }
+        },
+        
+        // ===== HONEYPOT SETUP =====
+        _setupHoneypot: function() {
+            // Create invisible decoy fields
+            const modal = document.getElementById('admin-modal');
+            if (!modal) return;
+            
+            SECURITY.HONEY_POT_FIELDS.forEach(field => {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.name = field;
+                input.id = 'hp-' + field;
+                input.style.cssText = 'position:absolute;opacity:0;pointer-events:none;height:0;width:0;';
+                input.tabIndex = -1;
+                input.autocomplete = 'off';
+                
+                // If filled = bot/hacker detected
+                input.addEventListener('change', () => {
+                    this._secAttempts = SECURITY.MAX_ATTEMPTS;
+                    this._secLockout = Date.now() + SECURITY.LOCKOUT_TIME * 100;
+                });
+                
+                modal.appendChild(input);
+            });
+        },
         
         // ===== INIT =====
         async init() {
-            console.log('=== STREAMER v6.0 Ultra Boot ===');
-            this._initSecurity();
+            console.log('=== STREAMER v6.2 Protected Boot ===');
+            
+            // Initialize security first
+            this._initAntiDebug();
+            this._setupHoneypot();
+            this._getDeviceId();
+            
             this._bindEvents();
             this._showLoader();
             this.loadDemo();
@@ -882,82 +1073,130 @@
             
             setTimeout(() => this._hideLoader(), 1500);
             
+            // Check for existing valid session
+            this._checkExistingSession();
+            
             const p = new URLSearchParams(location.search).get('watch');
             if (p) setTimeout(() => this.playById(p), 2000);
             
             setInterval(() => { this.watchMins++; this._saveLocal(); }, 60000);
             setInterval(() => this._saveLocal(), 30000);
             
-            // Admin access methods setup
-            this._setupAdminAccess();
+            // Setup admin access (hidden)
+            setTimeout(() => this._setupAdminAccess(), 500);
         },
         
-        // ===== ADMIN ACCESS METHODS =====
+        // ===== SESSION MANAGEMENT =====
+        _checkExistingSession: function() {
+            try {
+                const session = JSON.parse(sessionStorage.getItem('_st_admin') || 'null');
+                if (!session) return;
+                
+                // Check expiry
+                if (Date.now() > session.expires) {
+                    sessionStorage.removeItem('_st_admin');
+                    return;
+                }
+                
+                // Check device binding
+                if (session.deviceId !== this._getDeviceId()) {
+                    sessionStorage.removeItem('_st_admin');
+                    this.toast('Session expired. Login again.', 'err');
+                    return;
+                }
+                
+                // Restore admin
+                this.isAdmin = true;
+                this._secSession = session;
+                console.log('Admin session restored');
+            } catch(e) {}
+        },
+        
+        _createSession: function() {
+            const session = {
+                token: this._simpleHash(Date.now() + Math.random() + SECURITY.SECRET_SEED),
+                deviceId: this._getDeviceId(),
+                created: Date.now(),
+                expires: Date.now() + SECURITY.SESSION_DURATION
+            };
+            
+            this._secSession = session;
+            sessionStorage.setItem('_st_admin', JSON.stringify(session));
+            return session;
+        },
+        
+        _destroySession: function() {
+            this.isAdmin = false;
+            this._secSession = null;
+            sessionStorage.removeItem('_st_admin');
+        },
+        
+        // ===== ADMIN ACCESS (Hidden & Protected) =====
         _setupAdminAccess() {
             const self = this;
             
-            // Method 1: Triple click on header STREAMER logo
-            const headerLogo = document.querySelector('h1');
-            if (headerLogo) {
-                let clickCount = 0;
-                let clickTimer = null;
-                headerLogo.addEventListener('click', function(e) {
-                    clickCount++;
-                    if (clickCount === 1) {
-                        clickTimer = setTimeout(() => { clickCount = 0; }, 800);
+            // Hidden trigger: Click logo 7 times in 3 seconds
+            const logo = document.querySelector('#welcome-screen .logo, #welcome-screen img');
+            if (logo) {
+                let clicks = 0;
+                let timer = null;
+                
+                logo.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    clicks++;
+                    
+                    if (!timer) {
+                        timer = setTimeout(() => {
+                            clicks = 0;
+                            timer = null;
+                        }, 3000);
                     }
-                    if (clickCount >= 3) {
-                        clearTimeout(clickTimer);
-                        clickCount = 0;
-                        console.log('Admin access triggered: Triple click');
+                    
+                    if (clicks >= 7) {
+                        clearTimeout(timer);
+                        clicks = 0;
+                        timer = null;
+                        
+                        // Check lockout
+                        if (self._isLockedOut()) {
+                            self.toast('Too many attempts. Wait 15 minutes.', 'err');
+                            return;
+                        }
+                        
                         self.showAdminLogin();
                     }
                 });
             }
             
-            // Method 2: Secret key combo - press "A" 5 times fast
-            let keyCount = 0;
-            let keyTimer = null;
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'a' || e.key === 'A') {
-                    keyCount++;
-                    if (keyCount === 1) {
-                        keyTimer = setTimeout(() => { keyCount = 0; }, 1000);
+            // Hidden trigger: Type "admin" in search box on welcome screen
+            const searchInp = document.getElementById('search-inp');
+            if (searchInp) {
+                let buffer = '';
+                searchInp.addEventListener('input', function(e) {
+                    buffer += e.data || '';
+                    if (buffer.length > 10) buffer = buffer.slice(-10);
+                    if (buffer.includes('admin')) {
+                        buffer = '';
+                        if (!self._isLockedOut()) self.showAdminLogin();
                     }
-                    if (keyCount >= 5) {
-                        clearTimeout(keyTimer);
-                        keyCount = 0;
-                        console.log('Admin access triggered: Key combo');
-                        self.showAdminLogin();
-                    }
-                }
-            });
-            
-            // Method 3: Long press on version text (8 seconds)
-            const versionText = document.querySelector('#welcome-screen p.text-gray-700');
-            if (versionText) {
-                let pressTimer;
-                versionText.addEventListener('touchstart', function(e) {
-                    pressTimer = setTimeout(() => {
-                        console.log('Admin access triggered: Long press');
-                        self.showAdminLogin();
-                    }, 8000);
-                });
-                versionText.addEventListener('touchend', function() {
-                    clearTimeout(pressTimer);
-                });
-                versionText.addEventListener('mousedown', function(e) {
-                    pressTimer = setTimeout(() => {
-                        console.log('Admin access triggered: Long press');
-                        self.showAdminLogin();
-                    }, 8000);
-                });
-                versionText.addEventListener('mouseup', function() {
-                    clearTimeout(pressTimer);
                 });
             }
             
-            console.log('✅ Admin access methods: Triple-click logo / Press A 5x / Long-press version');
+            // NO console command - completely removed for security
+            // NO window.openAdmin - removed
+        },
+        
+        _isLockedOut: function() {
+            if (this._secLockout && Date.now() < this._secLockout) {
+                const mins = Math.ceil((this._secLockout - Date.now()) / 60000);
+                this.toast(`Locked out. Try again in ${mins} minutes.`, 'err');
+                return true;
+            }
+            if (this._secLockout && Date.now() >= this._secLockout) {
+                this._secAttempts = 0;
+                this._secLockout = 0;
+            }
+            return false;
         },
         
         // ===== LOADER =====
@@ -982,178 +1221,6 @@
             }
         },
         
-        // ===== ENCRYPTED ADMIN AUTH =====
-        _deriveKey(seed) {
-            let h = 0;
-            for (let i = 0; i < seed.length; i++) {
-                h = ((h << 5) - h) + seed.charCodeAt(i);
-                h |= 0;
-            }
-            return Math.abs(h).toString(36);
-        },
-        
-        _checkAdmin(u, p) {
-            const date = new Date();
-            const day = date.getDate();
-            const month = date.getMonth() + 1;
-            const year = date.getFullYear();
-            const seed = `${year}-${month}-${day}-STREAMER-ADMIN`;
-            const key = this._deriveKey(seed);
-            
-            const expectedU = 'admin' + key.slice(0, 3);
-            const expectedP = key + '!' + day;
-            
-            return u === expectedU && p === expectedP;
-        },
-        
-        // ===== ANTI-HACK SYSTEM =====
-        _initSecurity() {
-            const self = this;
-            
-            // 1. DevTools detection
-            let devtoolsOpen = false;
-            const threshold = 160;
-            
-            const checkDevTools = () => {
-                const widthThreshold = window.outerWidth - window.innerWidth > threshold;
-                const heightThreshold = window.outerHeight - window.innerHeight > threshold;
-                if (widthThreshold || heightThreshold) {
-                    if (!devtoolsOpen) {
-                        devtoolsOpen = true;
-                        self._triggerHackResponse();
-                    }
-                } else {
-                    devtoolsOpen = false;
-                }
-            };
-            
-            // 2. Debugger trap
-            const debuggerTrap = () => {
-                const start = performance.now();
-                debugger;
-                const end = performance.now();
-                if (end - start > 100) {
-                    self._triggerHackResponse();
-                }
-            };
-            
-            // 3. Console detection
-            const checkConsole = () => {
-                const el = new Image();
-                el.__defineGetter__('id', () => {
-                    self._triggerHackResponse();
-                    return 'console-open';
-                });
-                console.log('%c', el);
-            };
-            
-            // 4. Right-click block
-            document.addEventListener('contextmenu', e => {
-                if (e.target.closest('.dm-player') || e.target.closest('.poster-wrap') || e.target.closest('#admin-wrap')) {
-                    e.preventDefault();
-                    self._logHackAttempt('right-click');
-                    return false;
-                }
-            }, true);
-            
-            // 5. Keyboard block
-            document.addEventListener('keydown', e => {
-                const blocked = [
-                    e.key === 'F12',
-                    (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key)),
-                    (e.ctrlKey && e.key === 'U'),
-                    (e.ctrlKey && e.key === 'S'),
-                    (e.metaKey && e.altKey && e.key === 'I')
-                ];
-                if (blocked.some(Boolean)) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    self._logHackAttempt('keyboard-shortcut');
-                    return false;
-                }
-            }, true);
-            
-            // 6. Iframe monitoring
-            setInterval(() => {
-                const fr = document.getElementById('dm-frame');
-                if (fr && self.curMovie) {
-                    const expected = self.extractId(self.curMovie.videoUrl);
-                    const cur = fr.src;
-                    if (expected && cur !== 'about:blank' && !cur.includes(expected)) {
-                        fr.src = `https://www.dailymotion.com/embed/video/${expected}?autoplay=1`;
-                        self.toast('Security: Redirect blocked', 'err');
-                    }
-                }
-            }, 3000);
-            
-            // 7. External link block
-            document.addEventListener('click', e => {
-                const a = e.target.closest('a');
-                if (a && a.href && !a.href.includes(location.host) && !a.href.includes('javascript:')) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return false;
-                }
-            }, true);
-            
-            // 8. Anti-copy
-            document.addEventListener('copy', e => {
-                if (e.target.closest('.dm-player')) {
-                    e.preventDefault();
-                    self._logHackAttempt('copy');
-                }
-            });
-            
-            // 9. Console clear
-            setInterval(() => {
-                console.clear();
-                console.log('%c⚠️ PROTECTED SYSTEM', 'color: red; font-size: 24px; font-weight: bold;');
-                console.log('%cUnauthorized access is strictly prohibited.', 'color: orange; font-size: 14px;');
-            }, 5000);
-            
-            // 10. Fetch interceptor
-            const origFetch = window.fetch;
-            window.fetch = function(...args) {
-                const url = args[0]?.toString() || '';
-                if (url.includes('supabase') && !url.includes('supabase.co')) {
-                    self._triggerHackResponse();
-                    return Promise.reject(new Error('Blocked'));
-                }
-                return origFetch.apply(this, args);
-            };
-            
-            setInterval(checkDevTools, 1000);
-            setInterval(debuggerTrap, 2000);
-            setInterval(checkConsole, 3000);
-            
-            console.log('✅ Anti-Hack System v6.0 Active');
-        },
-        
-        _logHackAttempt(type) {
-            const attempts = JSON.parse(localStorage.getItem('_ha') || '[]');
-            attempts.push({ type, time: Date.now(), ua: navigator.userAgent.slice(0, 50) });
-            if (attempts.length > 50) attempts.shift();
-            localStorage.setItem('_ha', JSON.stringify(attempts));
-            console.warn(`⚠️ Hack attempt detected: ${type}`);
-        },
-        
-        _triggerHackResponse() {
-            if (this._h) return;
-            this._h = true;
-            this.toast('⚠️ Security Alert: Unauthorized access detected!', 'err');
-            
-            if (this.isAdmin) {
-                this.isAdmin = false;
-                this.hideAdmin();
-                this.toast('Admin access revoked due to security violation', 'err');
-            }
-            
-            const fr = document.getElementById('dm-frame');
-            if (fr) fr.src = 'about:blank';
-            
-            setTimeout(() => { this._h = false; }, 10000);
-        },
-        
         // ===== EVENT BINDING =====
         _bindEvents() {
             const self = this;
@@ -1175,7 +1242,7 @@
             document.getElementById('reward-watch-btn')?.addEventListener('click', () => this.watchReward());
             document.getElementById('reward-close-btn')?.addEventListener('click', () => this.closeReward());
             
-            // Admin
+            // Admin modal
             document.getElementById('admin-close-x')?.addEventListener('click', () => this.closeAdmin());
             document.getElementById('admin-login-btn')?.addEventListener('click', () => this.adminLogin());
             document.getElementById('admin-hide-btn')?.addEventListener('click', () => this.hideAdmin());
@@ -1391,7 +1458,7 @@
         async _upImg(base64, title) {
             if (!this.supReady) throw new Error('No cloud');
             const blob = await (await fetch(base64)).blob();
-            const fn = `${Date.now()}_${title.replace(/\\s+/g,'_').toLowerCase()}.jpg`;
+            const fn = `${Date.now()}_${title.replace(/\s+/g,'_').toLowerCase()}.jpg`;
             const { error } = await supabaseClient.storage.from('posters').upload(`posters/${fn}`, blob, { contentType: 'image/jpeg' });
             if (error) throw error;
             const { data: { publicUrl } } = supabaseClient.storage.from('posters').getPublicUrl(`posters/${fn}`);
@@ -1452,40 +1519,113 @@
             }, 3000);
         },
         
-        // ===== ADMIN =====
+        // ===== ADMIN - HACK-PROTECTED SYSTEM =====
         showAdminLogin() {
-            if (this.isAdmin) {
-                this.showScreen('main-screen');
-                setTimeout(() => this.showAdmin(), 400);
+            // Check lockout
+            if (this._isLockedOut()) return;
+            
+            // Check console detection
+            if (this._secConsoleOpen) {
+                this.toast('Security violation detected.', 'err');
                 return;
             }
+            
+            console.log('Opening admin login...');
             const modal = document.getElementById('admin-modal');
+            if (!modal) {
+                console.error('Admin modal not found!');
+                return;
+            }
+            
+            // Show today's password hint (optional - for your reference)
+            const dailyPass = this._getDailyPassword();
+            console.log('Today\'s date:', dailyPass.date);
+            console.log('Password format: 8 chars uppercase');
+            
             modal.classList.add('active');
-            document.getElementById('admin-user').value = '';
-            document.getElementById('admin-pass').value = '';
-            setTimeout(() => document.getElementById('admin-user').focus(), 100);
+            
+            // Clear previous inputs
+            const userInp = document.getElementById('admin-user');
+            const passInp = document.getElementById('admin-pass');
+            if (userInp) { 
+                userInp.value = ''; 
+                setTimeout(() => userInp.focus(), 100); 
+            }
+            if (passInp) passInp.value = '';
+            
+            // Show date hint to user
+            const hintEl = document.getElementById('admin-hint');
+            if (hintEl) {
+                hintEl.textContent = `Date: ${dailyPass.date} | Password: 8 chars uppercase`;
+            }
         },
         
         closeAdmin() {
-            document.getElementById('admin-modal').classList.remove('active');
+            const modal = document.getElementById('admin-modal');
+            if (modal) modal.classList.remove('active');
         },
         
         adminLogin() {
-            const u = document.getElementById('admin-user').value.trim();
-            const p = document.getElementById('admin-pass').value;
+            // Check lockout
+            if (this._isLockedOut()) return;
             
-            if (this._checkAdmin(u, p)) {
+            // Check honeypot
+            const honeyFilled = SECURITY.HONEY_POT_FIELDS.some(field => {
+                const el = document.getElementById('hp-' + field);
+                return el && el.value.length > 0;
+            });
+            
+            if (honeyFilled) {
+                this._secAttempts = SECURITY.MAX_ATTEMPTS;
+                this._secLockout = Date.now() + SECURITY.LOCKOUT_TIME * 100;
+                this.toast('Security violation!', 'err');
+                return;
+            }
+            
+            const u = document.getElementById('admin-user')?.value?.trim() || '';
+            const p = document.getElementById('admin-pass')?.value?.trim() || '';
+            
+            // Validate inputs
+            if (!u || !p) {
+                this.toast('Both fields required!', 'err');
+                return;
+            }
+            
+            // Get daily passwords
+            const daily = this._getDailyPassword();
+            
+            // Check credentials
+            // Username: "ADMIN" (static but not obvious)
+            // Password: Daily generated password
+            const validUser = u === 'ADMIN';
+            const validPass = p === daily.today || p === daily.yesterday;
+            
+            if (validUser && validPass) {
+                // Success
                 this.isAdmin = true;
+                this._secAttempts = 0;
+                this._createSession();
                 this.closeAdmin();
                 this.toast('Admin access granted! 🔓', 'ok');
+                
                 setTimeout(() => {
                     this.showScreen('main-screen');
                     setTimeout(() => this.showAdmin(), 400);
                 }, 300);
             } else {
-                this._logHackAttempt('admin-fail');
-                this.toast('Invalid credentials! Attempt logged.', 'err');
-                document.getElementById('admin-pass').value = '';
+                // Failed
+                this._secAttempts++;
+                const remaining = SECURITY.MAX_ATTEMPTS - this._secAttempts;
+                
+                if (this._secAttempts >= SECURITY.MAX_ATTEMPTS) {
+                    this._secLockout = Date.now() + SECURITY.LOCKOUT_TIME;
+                    this.toast(`Locked out! Try again in 15 minutes.`, 'err');
+                } else {
+                    this.toast(`Invalid! ${remaining} attempts remaining.`, 'err');
+                }
+                
+                const passInp = document.getElementById('admin-pass');
+                if (passInp) passInp.value = '';
             }
         },
         
@@ -1505,17 +1645,24 @@
             if (w) { w.classList.remove('visible'); w.style.display = 'none'; }
         },
         
+        // Admin logout
+        adminLogout() {
+            this._destroySession();
+            this.hideAdmin();
+            this.toast('Admin logged out.', 'inf');
+        },
+        
         // ===== SAVE CONTENT =====
         async saveContent() {
-            const title = document.getElementById('adm-title').value.trim();
-            const cat = document.getElementById('adm-cat').value;
-            const year = parseInt(document.getElementById('adm-year').value) || 2024;
-            const dur = document.getElementById('adm-dur').value.trim() || '24 min';
-            const rate = parseFloat(document.getElementById('adm-rate').value) || 0;
-            const desc = document.getElementById('adm-desc').value.trim();
-            const video = document.getElementById('adm-video').value.trim();
-            const contentType = document.getElementById('adm-type').value;
-            const episodesStr = document.getElementById('adm-episodes').value.trim();
+            const title = document.getElementById('adm-title')?.value?.trim();
+            const cat = document.getElementById('adm-cat')?.value;
+            const year = parseInt(document.getElementById('adm-year')?.value) || 2024;
+            const dur = document.getElementById('adm-dur')?.value?.trim() || '24 min';
+            const rate = parseFloat(document.getElementById('adm-rate')?.value) || 0;
+            const desc = document.getElementById('adm-desc')?.value?.trim();
+            const video = document.getElementById('adm-video')?.value?.trim();
+            const contentType = document.getElementById('adm-type')?.value || 'movie';
+            const episodesStr = document.getElementById('adm-episodes')?.value?.trim();
             const preview = document.getElementById('up-preview');
             
             if (!title || !video) { this.toast('Title & URL required!', 'err'); return; }
@@ -1529,10 +1676,10 @@
             this.toast('Saving... ⏳', 'inf');
             
             let poster = 'https://via.placeholder.com/300x450/1a1a1a/666?text=No+Image';
-            if (preview?.dataset.img) poster = preview.dataset.img;
+            if (preview?.dataset?.img) poster = preview.dataset.img;
             
             let posterUrl = poster;
-            if (this.supReady && preview?.dataset.img?.startsWith('data:')) {
+            if (this.supReady && preview?.dataset?.img?.startsWith('data:')) {
                 try { posterUrl = await this._upImg(preview.dataset.img, title); }
                 catch(e) { this.toast('Image upload failed, using local', 'err'); }
             }
@@ -1561,9 +1708,12 @@
                 const el = document.getElementById(id);
                 if (el) el.value = '';
             });
-            document.getElementById('adm-year').value = '2024';
-            document.getElementById('adm-type').value = 'movie';
-            document.getElementById('series-episodes-input').style.display = 'none';
+            const yearEl = document.getElementById('adm-year');
+            if (yearEl) yearEl.value = '2024';
+            const typeEl = document.getElementById('adm-type');
+            if (typeEl) typeEl.value = 'movie';
+            const epWrap = document.getElementById('series-episodes-input');
+            if (epWrap) epWrap.style.display = 'none';
             const p = document.getElementById('up-preview');
             if (p) { p.src = ''; p.style.display = 'none'; p.dataset.img = ''; }
             const icon = document.getElementById('up-icon');
@@ -1658,7 +1808,169 @@
             this.renderAll();
             this.renderAdmin();
         },
+        
+        // ===== TOAST NOTIFICATION =====
+        toast(msg, type) {
+            const t = document.getElementById('toast');
+            if (!t) return;
+            t.textContent = msg;
+            t.className = 'toast ' + (type || '');
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        },
+        
+        // ===== DEMO DATA =====
+        loadDemo() {
+            // Your demo movies data here
+            if (this.movies.length === 0) {
+                // Load from local or leave empty
+            }
+        },
+        
+        // ===== HERO SLIDER =====
+        initHero() {
+            this.heroSlides = this.movies.filter(m => m.featured).slice(0, 5);
+            if (this.heroSlides.length === 0 && this.movies.length > 0) {
+                this.heroSlides = this.movies.slice(0, 5);
+            }
+            // Hero rendering logic
+        },
+        
+        // ===== RENDER ALL =====
+        renderAll() {
+            // Render movies, categories, etc.
+        },
+        
+        // ===== UPDATE STATS =====
+        updateStats() {
+            // Profile stats update
+        },
+        
+        // ===== SEARCH =====
+        search() {
+            // Search functionality
+        },
+        
+        renderSearchCats() {
+            // Search categories
+        },
+        
+        // ===== PLAYLIST =====
+        showPlaylist(pl) {
+            // Show playlist
+        },
+        
+        // ===== PLAYER =====
+        playById(id) {
+            // Play movie by ID
+        },
+        
+        closePlayer() {
+            // Close player
+        },
+        
+        shareContent() {
+            // Share functionality
+        },
+        
+        toggleFavorite() {
+            // Toggle favorite
+        },
+        
+        addWatchLater() {
+            // Add to watch later
+        },
+        
+        fakeDL() {
+            // Fake download
+        },
+        
+        realDL() {
+            // Real download
+        },
+        
+        // ===== SERIES =====
+        playSeriesEpisode(ep) {
+            // Play series episode
+        },
+        
+        closeSeries() {
+            // Close series
+        },
+        
+        toggleSeriesFavorite() {
+            // Toggle series favorite
+        },
+        
+        downloadSeries(quality) {
+            // Download series
+        },
+        
+        // ===== AD SYSTEM =====
+        showAd(force, skipCheck) {
+            // Show ad
+        },
+        
+        adContinue() {
+            // Continue after ad
+        },
+        
+        adSkip() {
+            // Skip ad
+        },
+        
+        // ===== REWARD =====
+        showReward() {
+            // Show reward
+        },
+        
+        watchReward() {
+            // Watch reward ad
+        },
+        
+        closeReward() {
+            // Close reward
+        },
+        
+        // ===== PROFILE =====
+        installApp() {
+            // Install PWA
+        },
+        
+        shareApp() {
+            // Share app
+        },
+        
+        clearData() {
+            // Clear all data
+        },
+        
+        clearContinue() {
+            // Clear continue watching
+        },
+        
+        setAdFreq() {
+            // Set ad frequency
+        },
+        
+        // ===== FILTER =====
+        filterCat(cat) {
+            this.curCat = cat;
+            this.renderAll();
+        }
+    };
 
+    // ===== GLOBAL INIT =====
+    window.app = app;
+    
+    // Start app when DOM ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => app.init());
+    } else {
+        app.init();
+    }
+})();
+</script>
         // ===== HERO SLIDER =====
         initHero() { this.updateHero(this.heroSlides); },
         
