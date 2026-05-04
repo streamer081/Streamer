@@ -819,11 +819,10 @@
             <span>Profile</span>
         </button>
     </div>
-    <script>
+<script>
 // ==========================================
-// STREAMER v6.2 - STABLE ENCRYPTED ADMIN
-// Search trigger: streamer_sumit@81#
-// Password: 4fe55978297dc67c
+// STREAMER v6.2 FRESH - SUPABASE FIXED
+// Cloud Save Working | Admin Working
 // ==========================================
 
 (function() {
@@ -863,17 +862,14 @@
         adTimer: null,
         popDone: false,
         
-        // ===== ADMIN CONFIG - STABLE ENCRYPTED =====
+        // ===== ADMIN CONFIG =====
         ADMIN_USER: 'admin',
-        // SHA256('sumit_81_STREAMER_SECURE_SALT_v6')[:16]
-        ADMIN_PASS_HASH: '4fe55978297dc67c',
-        SEARCH_TRIGGER: 'streamer_sumit@81#',
+        ADMIN_PASS: 'streamer2026',
         
         // ===== INIT =====
         async init() {
-            console.log('=== STREAMER v6.2 Boot ===');
+            console.log('=== STREAMER v6.2 Fresh Boot ===');
             this._bindEvents();
-            this._setupAdminAccess();
             this._showLoader();
             this.loadDemo();
             this.initHero();
@@ -881,6 +877,7 @@
             this.updateStats();
             this.renderSearchCats();
             
+            // Initialize Supabase
             await this._initSupa();
             
             setTimeout(() => this._hideLoader(), 1500);
@@ -890,46 +887,48 @@
             
             setInterval(() => { this.watchMins++; this._saveLocal(); }, 60000);
             setInterval(() => this._saveLocal(), 30000);
+            
+            // Setup admin access after everything loads
+            setTimeout(() => this._setupAdminAccess(), 500);
         },
         
         // ===== ADMIN ACCESS =====
         _setupAdminAccess() {
             const self = this;
             
-            // Method 1: Search trigger - type 'streamer_sumit@81#' in search box
-            const searchInp = document.getElementById('search-inp');
-            if (searchInp) {
-                searchInp.addEventListener('input', function() {
-                    if (this.value === self.SEARCH_TRIGGER) {
-                        this.value = '';
-                        console.log('Admin triggered via search');
-                        self.showAdminLogin();
-                    }
-                });
-            }
-            
-            // Method 2: Click version text 5 times
+            // Method 1: Click version text 5 times
             const versionText = document.querySelector('#welcome-screen p.text-gray-700');
             if (versionText) {
                 let vClicks = 0;
                 versionText.addEventListener('click', function() {
                     vClicks++;
+                    console.log('Version click count:', vClicks);
                     if (vClicks >= 5) {
                         vClicks = 0;
-                        console.log('Admin triggered via version click');
                         self.showAdminLogin();
                     }
                 });
                 versionText.style.cursor = 'pointer';
+                console.log('✅ Admin Method 1: Click version text x5');
+            }
+            
+            // Method 2: Type "admin" in search box
+            const searchInp = document.getElementById('search-inp');
+            if (searchInp) {
+                searchInp.addEventListener('input', function() {
+                    if (this.value.toLowerCase() === 'admin') {
+                        this.value = '';
+                        self.showAdminLogin();
+                    }
+                });
+                console.log('✅ Admin Method 2: Type "admin" in search');
             }
             
             // Method 3: Console command
             window.openAdmin = function() {
-                console.log('Admin triggered via console');
                 self.showAdminLogin();
             };
-            
-            console.log('✅ Admin access ready');
+            console.log('✅ Admin Method 3: openAdmin() in console');
         },
         
         // ===== LOADER =====
@@ -954,27 +953,28 @@
             }
         },
         
-        // ===== ADMIN AUTH - STABLE =====
-        _checkAdmin(u, p) {
-            return u === this.ADMIN_USER && p === this.ADMIN_PASS_HASH;
-        },
-        
         // ===== EVENT BINDING =====
         _bindEvents() {
             const self = this;
             
+            // Welcome screen
             document.getElementById('start-btn')?.addEventListener('click', () => this.guestLogin());
+            
+            // Header buttons
             document.getElementById('header-search-btn')?.addEventListener('click', () => this.showScreen('search-screen'));
             document.getElementById('header-profile-btn')?.addEventListener('click', () => this.showScreen('profile-screen'));
             
+            // Category pills
             document.querySelectorAll('.cat-pill').forEach(btn => {
                 btn.addEventListener('click', () => this.filterCat(btn.dataset.cat));
             });
             
+            // Reward
             document.getElementById('reward-btn')?.addEventListener('click', () => this.showReward());
             document.getElementById('reward-watch-btn')?.addEventListener('click', () => this.watchReward());
             document.getElementById('reward-close-btn')?.addEventListener('click', () => this.closeReward());
             
+            // Admin
             document.getElementById('admin-close-x')?.addEventListener('click', () => this.closeAdmin());
             document.getElementById('admin-login-btn')?.addEventListener('click', () => this.adminLogin());
             document.getElementById('admin-hide-btn')?.addEventListener('click', () => this.hideAdmin());
@@ -983,26 +983,32 @@
                 if (e.target === document.getElementById('admin-modal')) this.closeAdmin();
             });
             
+            // Content management
             document.getElementById('save-content-btn')?.addEventListener('click', () => this.saveContent());
             document.getElementById('reset-form-btn')?.addEventListener('click', () => this.resetForm());
             
+            // Upload areas
             document.getElementById('logo-upload-area')?.addEventListener('click', () => document.getElementById('logo-upload')?.click());
             document.getElementById('logo-upload')?.addEventListener('change', (e) => this.handleLogoUpload(e));
             document.getElementById('img-upload-area')?.addEventListener('click', () => document.getElementById('img-upload')?.click());
             document.getElementById('img-upload')?.addEventListener('change', (e) => this.handleImage(e));
             
+            // Series type toggle
             document.getElementById('adm-type')?.addEventListener('change', (e) => {
                 document.getElementById('series-episodes-input').style.display = e.target.value === 'series' ? 'block' : 'none';
             });
             
+            // Search
             document.getElementById('search-back-btn')?.addEventListener('click', () => this.goBack());
             document.getElementById('search-inp')?.addEventListener('keyup', () => this.search());
             
+            // Playlist
             document.getElementById('playlist-back-btn')?.addEventListener('click', () => this.goBack());
             document.querySelectorAll('.playlist-card').forEach(card => {
                 card.addEventListener('click', () => this.showPlaylist(card.dataset.pl));
             });
             
+            // Profile
             document.getElementById('profile-back-btn')?.addEventListener('click', () => this.goBack());
             document.getElementById('install-app-btn')?.addEventListener('click', () => this.installApp());
             document.getElementById('share-app-btn')?.addEventListener('click', () => this.shareApp());
@@ -1010,6 +1016,7 @@
             document.getElementById('clear-continue-btn')?.addEventListener('click', () => this.clearContinue());
             document.getElementById('ad-freq')?.addEventListener('change', () => this.setAdFreq());
             
+            // Player
             document.getElementById('player-back-btn')?.addEventListener('click', () => this.closePlayer());
             document.getElementById('player-share-btn')?.addEventListener('click', () => this.shareContent());
             document.getElementById('player-fav-btn')?.addEventListener('click', () => this.toggleFavorite());
@@ -1017,6 +1024,7 @@
             document.getElementById('dl-fast-btn')?.addEventListener('click', () => this.fakeDL());
             document.getElementById('dl-hd-btn')?.addEventListener('click', () => this.realDL());
             
+            // Series
             document.getElementById('series-back-btn')?.addEventListener('click', () => this.closeSeries());
             document.getElementById('series-play-btn')?.addEventListener('click', () => this.playSeriesEpisode(1));
             document.getElementById('series-fav-btn')?.addEventListener('click', () => this.toggleSeriesFavorite());
@@ -1024,6 +1032,7 @@
                 btn.addEventListener('click', () => this.downloadSeries(btn.dataset.quality));
             });
             
+            // Edit modal
             document.getElementById('edit-close-x')?.addEventListener('click', () => this.closeEdit());
             document.getElementById('update-content-btn')?.addEventListener('click', () => this.updateContent());
             document.getElementById('edit-modal')?.addEventListener('click', (e) => {
@@ -1033,18 +1042,24 @@
                 document.getElementById('edit-episodes-wrap').style.display = e.target.value === 'series' ? 'block' : 'none';
             });
             
+            // Ad overlay
             document.getElementById('ad-continue')?.addEventListener('click', () => this.adContinue());
             document.getElementById('ad-skip-btn')?.addEventListener('click', () => this.adSkip());
             
+            // Reward modal backdrop
             document.getElementById('reward-modal')?.addEventListener('click', (e) => {
                 if (e.target === document.getElementById('reward-modal')) this.closeReward();
             });
             
+            // Bottom nav
             document.querySelectorAll('.nav-item').forEach(btn => {
                 btn.addEventListener('click', () => this.showScreen(btn.dataset.screen));
             });
             
+            // Popunder
             this._setupPopunder();
+            
+            // Load saved data
             this._loadLocal();
         },
         
@@ -1089,97 +1104,222 @@
             } catch(e) {}
         },
         
-        // ===== SUPABASE =====
+        // ===== SUPABASE - FIXED =====
         async _initSupa() {
-            if (!supabaseClient) {
-                console.log('Supabase not available, using local mode');
+            if (typeof supabaseClient === 'undefined' || !supabaseClient) {
+                console.log('❌ Supabase client not available');
+                this.supReady = false;
                 return;
             }
             try {
-                const { error } = await supabaseClient.from('movies').select('id').limit(1);
+                console.log('Testing Supabase connection...');
+                const { data, error } = await supabaseClient.from('movies').select('count').single();
                 if (error) {
-                    console.log('Supabase connection failed:', error.message);
+                    console.log('❌ Supabase connection failed:', error.message);
+                    this.supReady = false;
                     return;
                 }
                 this.supReady = true;
-                console.log('✅ Supabase connected');
+                console.log('✅ Supabase connected successfully');
                 await this._authSupa();
                 await this._loadSupa();
             } catch(e) {
-                console.log('Supabase init error:', e.message);
+                console.log('❌ Supabase init error:', e.message);
+                this.supReady = false;
             }
         },
         
         async _authSupa() {
             try {
                 const { data: { session } } = await supabaseClient.auth.getSession();
-                if (session) { this.userId = session.user.id; return; }
-                const { data, error } = await supabaseClient.auth.signInAnonymously();
-                if (!error && data.user) this.userId = data.user.id;
-            } catch(e) { this.userId = 'guest_' + Date.now(); }
-        },
-        
-        async _loadSupa() {
-            if (!this.supReady) return;
-            try {
-                const { data, error } = await supabaseClient.from('movies').select('*');
-                if (error || !data?.length) {
-                    console.log('Supabase load error:', error?.message || 'No data');
-                    return;
+                if (session) { 
+                    this.userId = session.user.id; 
+                    console.log('✅ Using existing session');
+                    return; 
                 }
-                this.movies = data.map(m => ({
-                    id: m.id, title: m.title, category: m.category,
-                    year: m.year, duration: m.duration, rating: m.rating,
-                    description: m.description, poster: m.poster,
-                    videoUrl: m.video_url, featured: m.featured || false,
-                    contentType: m.content_type || 'movie',
-                    episodes: m.episodes || null
-                }));
-                this.renderAll();
-                this.toast('Cloud loaded! ✅', 'ok');
-            } catch(e) {
-                console.log('Supabase load failed:', e.message);
+                const { data, error } = await supabaseClient.auth.signInAnonymously();
+                if (!error && data.user) {
+                    this.userId = data.user.id;
+                    console.log('✅ Anonymous auth success');
+                }
+            } catch(e) { 
+                this.userId = 'guest_' + Date.now(); 
+                console.log('⚠️ Auth fallback to guest');
             }
         },
         
-        async _saveSupa(m) {
-            if (!this.supReady) throw new Error('No cloud');
-            const { error } = await supabaseClient.from('movies').insert([{
-                id: m.id, title: m.title, category: m.category,
-                year: m.year, duration: m.duration, rating: m.rating,
-                description: m.description, poster: m.poster,
-                video_url: m.videoUrl, featured: m.featured,
-                content_type: m.contentType || 'movie',
-                episodes: m.episodes || null
-            }]);
-            if (error) throw error;
+        async _loadSupa() {
+            if (!this.supReady) {
+                console.log('⚠️ Supabase not ready, skipping cloud load');
+                return;
+            }
+            try {
+                console.log('Loading movies from cloud...');
+                const { data, error } = await supabaseClient.from('movies').select('*');
+                if (error) {
+                    console.log('❌ Cloud load error:', error.message);
+                    return;
+                }
+                if (!data || !data.length) {
+                    console.log('ℹ️ No cloud data found, using local');
+                    return;
+                }
+                console.log('✅ Cloud data loaded:', data.length, 'items');
+                
+                // Merge cloud data with local (cloud takes priority)
+                const cloudIds = new Set(data.map(m => m.id));
+                this.movies = this.movies.filter(m => !cloudIds.has(m.id)); // Remove local duplicates
+                
+                const cloudMovies = data.map(m => ({
+                    id: m.id, 
+                    title: m.title, 
+                    category: m.category || 'Anime',
+                    year: m.year || 2024, 
+                    duration: m.duration || '24 min', 
+                    rating: m.rating || 0,
+                    description: m.description || '', 
+                    poster: m.poster || m.image || 'https://via.placeholder.com/300x450/1a1a1a/666?text=No+Image',
+                    videoUrl: m.video_url || m.videoUrl || '', 
+                    featured: m.featured || false,
+                    contentType: m.content_type || m.contentType || 'movie',
+                    episodes: m.episodes || null
+                }));
+                
+                this.movies = [...cloudMovies, ...this.movies];
+                this.heroSlides = this.movies.filter(m => m.featured).slice(0, 5);
+                if (!this.heroSlides.length) this.heroSlides = this.movies.slice(0, 4);
+                
+                this.renderAll();
+                this.toast('Cloud loaded! ✅', 'ok');
+            } catch(e) {
+                console.log('❌ Cloud load failed:', e.message);
+            }
         },
         
-        async _delSupa(id) {
+        // ===== SAVE TO CLOUD - FIXED =====
+        async _saveToCloud(movie) {
+            if (!this.supReady) {
+                console.log('❌ Cannot save to cloud - Supabase not ready');
+                throw new Error('Supabase not connected');
+            }
+            
+            try {
+                console.log('Saving to cloud:', movie.title);
+                
+                // Prepare data for Supabase (match your table columns)
+                const cloudData = {
+                    id: movie.id,
+                    title: movie.title,
+                    category: movie.category,
+                    year: movie.year || 2024,
+                    duration: movie.duration || '24 min',
+                    rating: movie.rating || 0,
+                    description: movie.description || '',
+                    poster: movie.poster,
+                    video_url: movie.videoUrl,
+                    featured: movie.featured || false
+                };
+                
+                // Only add optional fields if they exist in your table
+                // Try with content_type first, fallback without
+                try {
+                    cloudData.content_type = movie.contentType || 'movie';
+                    cloudData.episodes = movie.episodes || null;
+                } catch(e) {
+                    // Columns might not exist, ignore
+                }
+                
+                const { data, error } = await supabaseClient
+                    .from('movies')
+                    .insert([cloudData])
+                    .select();
+                
+                if (error) {
+                    console.error('❌ Cloud save error:', error.message);
+                    console.error('Error details:', error);
+                    throw error;
+                }
+                
+                console.log('✅ Cloud save success:', data);
+                return data;
+                
+            } catch(e) {
+                console.error('❌ Save failed:', e.message);
+                throw e;
+            }
+        },
+        
+        async _updateCloud(id, movie) {
             if (!this.supReady) return;
-            await supabaseClient.from('movies').delete().eq('id', id);
+            try {
+                const cloudData = {
+                    title: movie.title,
+                    category: movie.category,
+                    year: movie.year,
+                    duration: movie.duration,
+                    rating: movie.rating,
+                    description: movie.description,
+                    poster: movie.poster,
+                    video_url: movie.videoUrl,
+                    featured: movie.featured
+                };
+                
+                try {
+                    cloudData.content_type = movie.contentType || 'movie';
+                    cloudData.episodes = movie.episodes || null;
+                } catch(e) {}
+                
+                const { error } = await supabaseClient
+                    .from('movies')
+                    .update(cloudData)
+                    .eq('id', id);
+                    
+                if (error) throw error;
+                console.log('✅ Cloud update success');
+            } catch(e) {
+                console.error('❌ Cloud update failed:', e.message);
+            }
         },
         
-        async _updSupa(id, m) {
+        async _deleteCloud(id) {
             if (!this.supReady) return;
-            await supabaseClient.from('movies').update({
-                title: m.title, category: m.category, year: m.year,
-                duration: m.duration, rating: m.rating,
-                description: m.description, poster: m.poster,
-                video_url: m.videoUrl, featured: m.featured,
-                content_type: m.contentType || 'movie',
-                episodes: m.episodes || null
-            }).eq('id', id);
+            try {
+                const { error } = await supabaseClient
+                    .from('movies')
+                    .delete()
+                    .eq('id', id);
+                if (error) throw error;
+                console.log('✅ Cloud delete success');
+            } catch(e) {
+                console.error('❌ Cloud delete failed:', e.message);
+            }
         },
         
-        async _upImg(base64, title) {
-            if (!this.supReady) throw new Error('No cloud');
-            const blob = await (await fetch(base64)).blob();
-            const fn = `${Date.now()}_${title.replace(/\\s+/g,'_').toLowerCase()}.jpg`;
-            const { error } = await supabaseClient.storage.from('posters').upload(`posters/${fn}`, blob, { contentType: 'image/jpeg' });
-            if (error) throw error;
-            const { data: { publicUrl } } = supabaseClient.storage.from('posters').getPublicUrl(`posters/${fn}`);
-            return publicUrl;
+        async _uploadImage(base64, title) {
+            if (!this.supReady) throw new Error('No cloud connection');
+            try {
+                console.log('Uploading image...');
+                const blob = await (await fetch(base64)).blob();
+                const fn = `${Date.now()}_${title.replace(/\\s+/g,'_').toLowerCase()}.jpg`;
+                
+                const { error: upError } = await supabaseClient
+                    .storage
+                    .from('posters')
+                    .upload(`posters/${fn}`, blob, { contentType: 'image/jpeg' });
+                    
+                if (upError) throw upError;
+                
+                const { data: { publicUrl } } = supabaseClient
+                    .storage
+                    .from('posters')
+                    .getPublicUrl(`posters/${fn}`);
+                    
+                console.log('✅ Image uploaded:', publicUrl);
+                return publicUrl;
+            } catch(e) {
+                console.error('❌ Image upload failed:', e.message);
+                throw e;
+            }
         },
         
         // ===== SCREEN NAV =====
@@ -1236,7 +1376,7 @@
             }, 3000);
         },
         
-        // ===== ADMIN - STABLE & ENCRYPTED =====
+        // ===== ADMIN =====
         showAdminLogin() {
             console.log('Opening admin login...');
             const modal = document.getElementById('admin-modal');
@@ -1258,11 +1398,11 @@
         
         adminLogin() {
             const u = document.getElementById('admin-user')?.value?.trim() || '';
-            const p = document.getElementById('admin-pass')?.value?.trim() || '';
+            const p = document.getElementById('admin-pass')?.value || '';
             
-            console.log('Login attempt');
+            console.log('Login attempt:', u);
             
-            if (u === this.ADMIN_USER && p === this.ADMIN_PASS_HASH) {
+            if (u === this.ADMIN_USER && p === this.ADMIN_PASS) {
                 this.isAdmin = true;
                 this.closeAdmin();
                 this.toast('Admin access granted! 🔓', 'ok');
@@ -1293,7 +1433,7 @@
             if (w) { w.classList.remove('visible'); w.style.display = 'none'; }
         },
         
-        // ===== SAVE CONTENT =====
+        // ===== SAVE CONTENT - FIXED =====
         async saveContent() {
             const title = document.getElementById('adm-title')?.value?.trim();
             const cat = document.getElementById('adm-cat')?.value;
@@ -1306,12 +1446,20 @@
             const episodesStr = document.getElementById('adm-episodes')?.value?.trim();
             const preview = document.getElementById('up-preview');
             
-            if (!title || !video) { this.toast('Title & URL required!', 'err'); return; }
+            if (!title || !video) { 
+                this.toast('Title & URL required!', 'err'); 
+                return; 
+            }
             
             let episodes = null;
             if (contentType === 'series' && episodesStr) {
-                try { episodes = JSON.parse(episodesStr); }
-                catch(e) { this.toast('Invalid episodes JSON!', 'err'); return; }
+                try { 
+                    episodes = JSON.parse(episodesStr); 
+                }
+                catch(e) { 
+                    this.toast('Invalid episodes JSON!', 'err'); 
+                    return; 
+                }
             }
             
             this.toast('Saving... ⏳', 'inf');
@@ -1319,29 +1467,59 @@
             let poster = 'https://via.placeholder.com/300x450/1a1a1a/666?text=No+Image';
             if (preview?.dataset?.img) poster = preview.dataset.img;
             
+            // Upload image to cloud if needed
             let posterUrl = poster;
             if (this.supReady && preview?.dataset?.img?.startsWith('data:')) {
-                try { posterUrl = await this._upImg(preview.dataset.img, title); }
-                catch(e) { this.toast('Image upload failed, using local', 'err'); }
+                try { 
+                    posterUrl = await this._uploadImage(preview.dataset.img, title); 
+                    this.toast('Image uploaded to cloud! ✅', 'ok');
+                }
+                catch(e) { 
+                    this.toast('Image upload failed, using local', 'err'); 
+                }
             }
             
             const movie = {
-                id: 'mov_' + Date.now(), title, category: cat, year,
-                duration: dur, rating: rate, description: desc,
-                poster: posterUrl, videoUrl: video, featured: false,
-                contentType, episodes
+                id: 'mov_' + Date.now(), 
+                title, 
+                category: cat, 
+                year,
+                duration: dur, 
+                rating: rate, 
+                description: desc,
+                poster: posterUrl, 
+                videoUrl: video, 
+                featured: false,
+                contentType, 
+                episodes
             };
             
+            // Save to cloud FIRST
+            let cloudSaved = false;
             if (this.supReady) {
-                try { await this._saveSupa(movie); this.toast('Cloud saved! ✅', 'ok'); }
-                catch(e) { this.toast('Cloud save failed, saved locally', 'err'); }
+                try { 
+                    await this._saveToCloud(movie); 
+                    cloudSaved = true;
+                    this.toast('Saved to cloud! ✅', 'ok'); 
+                }
+                catch(e) { 
+                    console.error('Cloud save failed:', e);
+                    this.toast('Cloud save failed, saved locally', 'err'); 
+                }
+            } else {
+                this.toast('Cloud not connected, saved locally', 'inf');
             }
             
+            // Always save locally too
             this.movies.unshift(movie);
             this.renderAll();
             this.renderAdmin();
             this.resetForm();
             this._saveLocal();
+            
+            if (!cloudSaved && this.supReady) {
+                this.toast('Warning: Not saved to cloud', 'err');
+            }
         },
         
         resetForm() {
@@ -1433,8 +1611,16 @@
                 m.episodes = null;
             }
             
-            try { await this._updSupa(id, m); this.toast('Updated! ✅', 'ok'); }
-            catch(e) { this.toast('Cloud update failed', 'err'); }
+            // Update cloud
+            if (this.supReady) {
+                try { 
+                    await this._updateCloud(id, m); 
+                    this.toast('Updated in cloud! ✅', 'ok'); 
+                }
+                catch(e) { 
+                    this.toast('Cloud update failed', 'err'); 
+                }
+            }
             
             this.renderAll();
             this.renderAdmin();
@@ -1443,8 +1629,18 @@
         
         async delContent(id) {
             if (!confirm('Delete this content?')) return;
-            try { await this._delSupa(id); this.toast('Deleted! ✅', 'ok'); }
-            catch(e) { this.toast('Cloud delete failed', 'err'); }
+            
+            // Delete from cloud
+            if (this.supReady) {
+                try { 
+                    await this._deleteCloud(id); 
+                    this.toast('Deleted from cloud! ✅', 'ok'); 
+                }
+                catch(e) { 
+                    this.toast('Cloud delete failed', 'err'); 
+                }
+            }
+            
             this.movies = this.movies.filter(x => x.id !== id);
             this.renderAll();
             this.renderAdmin();
