@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -819,6 +820,7 @@
             <span>Profile</span>
         </button>
     </div>
+
 <script>
 // ==========================================
 // STREAMER v6.2 FRESH - SUPABASE FIXED
@@ -1113,7 +1115,11 @@
             }
             try {
                 console.log('Testing Supabase connection...');
-                const { data, error } = await supabaseClient.from('movies').select('count').single();
+                // ✅ FIXED: Proper count query
+                const { count, error } = await supabaseClient
+                    .from('movies')
+                    .select('*', { count: 'exact', head: true });
+                    
                 if (error) {
                     console.log('❌ Supabase connection failed:', error.message);
                     this.supReady = false;
@@ -1206,7 +1212,7 @@
             try {
                 console.log('Saving to cloud:', movie.title);
                 
-                // Prepare data for Supabase (match your table columns)
+                // ✅ FIXED: Only include columns that exist in your table
                 const cloudData = {
                     id: movie.id,
                     title: movie.title,
@@ -1220,19 +1226,9 @@
                     featured: movie.featured || false
                 };
                 
-                // Only add optional fields if they exist in your table
-                // Try with content_type first, fallback without
-                try {
-                    cloudData.content_type = movie.contentType || 'movie';
-                    cloudData.episodes = movie.episodes || null;
-                } catch(e) {
-                    // Columns might not exist, ignore
-                }
-                
                 const { data, error } = await supabaseClient
                     .from('movies')
-                    .insert([cloudData])
-                    .select();
+                    .insert([cloudData]);
                 
                 if (error) {
                     console.error('❌ Cloud save error:', error.message);
@@ -1252,6 +1248,7 @@
         async _updateCloud(id, movie) {
             if (!this.supReady) return;
             try {
+                // ✅ FIXED: Exact table columns only
                 const cloudData = {
                     title: movie.title,
                     category: movie.category,
@@ -1263,11 +1260,6 @@
                     video_url: movie.videoUrl,
                     featured: movie.featured
                 };
-                
-                try {
-                    cloudData.content_type = movie.contentType || 'movie';
-                    cloudData.episodes = movie.episodes || null;
-                } catch(e) {}
                 
                 const { error } = await supabaseClient
                     .from('movies')
@@ -1645,7 +1637,7 @@
             this.renderAll();
             this.renderAdmin();
         },
-
+        
         // ===== HERO SLIDER =====
         initHero() { this.updateHero(this.heroSlides); },
         
