@@ -7,33 +7,23 @@
     <meta name="description" content="STREAMER - Premium streaming platform">
     <meta name="robots" content="noindex, nofollow">
     <title>STREAMER</title>
-    <script src="https://cdn.tailwindcss.com "></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css ">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/dist/umd/supabase.min.js "></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/dist/umd/supabase.min.js"></script>
     <script>
         const _SC = (() => {
             const k = 'STREAMER2026';
-            const x = (s, k) => {
-                let r = '';
-                for(let i = 0; i < s.length; i++) {
-                    r += String.fromCharCode(s.charCodeAt(i) ^ k.charCodeAt(i % k.length));
-                }
-                return r;
-            };
+            const x = (s, k) => { let r = ''; for(let i = 0; i < s.length; i++) { r += String.fromCharCode(s.charCodeAt(i) ^ k.charCodeAt(i % k.length)); } return r; };
             const e = 'OyAmNTJ3an1CVUpPPSElNyg+Nz9bRlpPMDc3NW8+MCJTUlNFNnoxKiQ0DzpQd1FfHD0YDBQ3DGN8WXtFGjoAcCIODGR7W0JuBRcYfG8oPBhCUwF7Ohs7DzspHRBaaV9wKQ4BDDIEKxhealt/ZR08By0oDT5HVGpSKjUKCzgvEj4AUXpaOQ1gEzYELCVbU18PIA4BDHcEKBRHUgACOhgRDzEUHQNbf1hzYBooJnEDPwMAfVhnIB0/E3UuBhsEfVh3ZhkoBHAAAQtLfnoGfWwINXcGP2JwY3p9AQM3NHIYIBtjSgQCPQ4acxEHADcfU0VsMSc/FSwlER8=';
             const d = atob(e);
             const dec = x(d, k);
-            const u = dec.slice(0, 40);
-            const a = dec.slice(40);
-            return { u, a };
+            return { u: dec.slice(0, 40), a: dec.slice(40) };
         })();
         const SUPABASE_URL = _SC.u;
         const SUPABASE_ANON_KEY = _SC.a;
-        let supabaseClient = null;
-        try { supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); console.log('Supabase OK'); } catch(e) { console.error('Supabase fail', e); }
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300 ;400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         * { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
         body { background: #0a0a0a; color: #fff; margin: 0; padding: 0; overflow-x: hidden; }
         ::-webkit-scrollbar { width: 3px; height: 3px; }
@@ -44,7 +34,6 @@
         .screen.active { display: block; opacity: 1; transform: translateY(0); z-index: 20; }
         body.sidebar-open .screen.active { transform: translateX(220px); }
         #welcome-screen { z-index: 30; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        #detail-screen { z-index: 95; }
 
         .loader-screen { position: fixed; inset: 0; background: #0a0a0a; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity .5s; }
         .loader-screen.hidden { opacity: 0; pointer-events: none; }
@@ -194,7 +183,6 @@
         .no-select { user-select: none; -webkit-user-select: none; }
         img { -webkit-user-drag: none; pointer-events: none; }
 
-        .search-hero { padding: 14px; background: linear-gradient(180deg, rgba(239,68,68,0.04) 0%, transparent 100%); }
         .search-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 0 16px; }
         .search-cat-item { padding: 12px 10px; border-radius: 10px; cursor: pointer; transition: all .2s; border: 1px solid rgba(255,255,255,0.03); background: rgba(255,255,255,0.01); }
         .search-cat-item:hover { transform: scale(1.02); border-color: rgba(239,68,68,0.15); background: rgba(255,255,255,0.025); }
@@ -240,9 +228,9 @@
             .hero-title { font-size: 1.1rem; }
         }
     </style>
+<base target="_blank">
 </head>
 <body class="no-select">
-
     <!-- LOADING SCREEN -->
     <div id="loader" class="loader-screen">
         <div class="loader-ring"></div>
@@ -472,7 +460,7 @@
                     <div><label class="lbl">Rating</label><input type="number" id="adm-rate" min="0" max="10" step="0.1" placeholder="8.5" class="inp"></div>
                 </div>
                 <div class="mb-2"><label class="lbl">Description</label><textarea id="adm-desc" rows="2" placeholder="Synopsis..." class="inp" style="resize:none;"></textarea></div>
-                <div class="mb-2"><label class="lbl">Video URL *</label><input type="url" id="adm-video" placeholder="https://dailymotion.com/video/ID " class="inp"></div>
+                <div class="mb-2"><label class="lbl">Video URL *</label><input type="url" id="adm-video" placeholder="https://dailymotion.com/video/ID" class="inp"></div>
                 <div class="mb-3">
                     <label class="lbl">Content Type</label>
                     <select id="adm-type" class="inp">
@@ -583,17 +571,17 @@
             <div class="space-y-1.5">
                 <div class="flex items-center gap-3 p-2.5 bg-white/5 rounded-xl cursor-pointer hover:bg-white/10 transition" onclick="app.quickSearch('Solo Leveling')">
                     <span class="text-red-500 font-bold text-base w-5">1</span>
-                    <div class="flex-1"><p class="text-xs font-semibold">Solo Leveling</p><p class="text-xs text-gray-600">Anime · 12M searches</p></div>
+                    <div class="flex-1"><p class="text-xs font-semibold">Solo Leveling</p><p class="text-xs text-gray-600">Anime &middot; 12M searches</p></div>
                     <i class="fas fa-chevron-right text-gray-700 text-xs"></i>
                 </div>
                 <div class="flex items-center gap-3 p-2.5 bg-white/5 rounded-xl cursor-pointer hover:bg-white/10 transition" onclick="app.quickSearch('Black Adam')">
                     <span class="text-orange-500 font-bold text-base w-5">2</span>
-                    <div class="flex-1"><p class="text-xs font-semibold">Black Adam</p><p class="text-xs text-gray-600">Movie · 8M searches</p></div>
+                    <div class="flex-1"><p class="text-xs font-semibold">Black Adam</p><p class="text-xs text-gray-600">Movie &middot; 8M searches</p></div>
                     <i class="fas fa-chevron-right text-gray-700 text-xs"></i>
                 </div>
                 <div class="flex items-center gap-3 p-2.5 bg-white/5 rounded-xl cursor-pointer hover:bg-white/10 transition" onclick="app.quickSearch('My Demon')">
                     <span class="text-yellow-500 font-bold text-base w-5">3</span>
-                    <div class="flex-1"><p class="text-xs font-semibold">My Demon</p><p class="text-xs text-gray-600">K-Drama · 6M searches</p></div>
+                    <div class="flex-1"><p class="text-xs font-semibold">My Demon</p><p class="text-xs text-gray-600">K-Drama &middot; 6M searches</p></div>
                     <i class="fas fa-chevron-right text-gray-700 text-xs"></i>
                 </div>
             </div>
@@ -642,7 +630,7 @@
             <h2 class="text-xl font-bold mb-1">Guest User</h2>
             <p class="text-gray-600 text-xs mb-2">Free Plan</p>
             <div class="flex items-center justify-center gap-2 mb-3">
-                <span class="px-2.5 py-1 bg-yellow-500/10 text-yellow-500 rounded-full text-xs font-bold border border-yellow-500/20">⭐ Premium</span>
+                <span class="px-2.5 py-1 bg-yellow-500/10 text-yellow-500 rounded-full text-xs font-bold border border-yellow-500/20">&#9733; Premium</span>
                 <span class="px-2.5 py-1 bg-green-500/10 text-green-500 rounded-full text-xs font-bold border border-green-500/20">Online</span>
             </div>
         </div>
@@ -670,8 +658,8 @@
 
         <div class="profile-section">
             <h3 class="text-xs font-bold mb-3 flex items-center gap-2"><i class="fas fa-th-large text-red-500 text-xs"></i> Features</h3>
-            
-            <div class="profile-item" onclick="app.showScreen('search-screen')"><div class="profile-item-left"><div class="profile-item-icon bg-blue-500/10 text-blue-500"><i class="fas fa-search"></i></div><div><div class="profile-item-text">Search Content</div><div class="profile-item-sub">Find movies, anime & more</div></div></div><i class="fas fa-chevron-right text-gray-700 text-xs"></i></div>
+
+            <div class="profile-item" onclick="app.showScreen('search-screen')"><div class="profile-item-left"><div class="profile-item-icon bg-blue-500/10 text-blue-500"><i class="fas fa-search"></i></div><div><div class="profile-item-text">Search Content</div><div class="profile-item-sub">Find movies, anime &amp; more</div></div></div><i class="fas fa-chevron-right text-gray-700 text-xs"></i></div>
             <div class="profile-item" onclick="app.showDownloads()"><div class="profile-item-left"><div class="profile-item-icon bg-green-500/10 text-green-500"><i class="fas fa-download"></i></div><div><div class="profile-item-text">My Downloads</div><div class="profile-item-sub">Offline content</div></div></div><i class="fas fa-chevron-right text-gray-700 text-xs"></i></div>
             <div class="profile-item" onclick="app.showWatchHistory()"><div class="profile-item-left"><div class="profile-item-icon bg-purple-500/10 text-purple-500"><i class="fas fa-history"></i></div><div><div class="profile-item-text">Watch History</div><div class="profile-item-sub">Recently watched</div></div></div><i class="fas fa-chevron-right text-gray-700 text-xs"></i></div>
             <div class="profile-item" onclick="app.showMyRatings()"><div class="profile-item-left"><div class="profile-item-icon bg-yellow-500/10 text-yellow-500"><i class="fas fa-star"></i></div><div><div class="profile-item-text">My Ratings</div><div class="profile-item-sub">Content you rated</div></div></div><i class="fas fa-chevron-right text-gray-700 text-xs"></i></div>
@@ -684,14 +672,14 @@
             <div class="profile-item" onclick="app.showDataSaver()"><div class="profile-item-left"><div class="profile-item-icon bg-emerald-500/10 text-emerald-500"><i class="fas fa-wifi"></i></div><div><div class="profile-item-text">Data Saver</div><div class="profile-item-sub" id="setting-datasaver">Off</div></div></div><i class="fas fa-chevron-right text-gray-700 text-xs"></i></div>
             <div class="profile-item" onclick="app.showThemeSettings()"><div class="profile-item-left"><div class="profile-item-icon bg-violet-500/10 text-violet-500"><i class="fas fa-moon"></i></div><div><div class="profile-item-text">Theme</div><div class="profile-item-sub" id="setting-theme">Dark</div></div></div><i class="fas fa-chevron-right text-gray-700 text-xs"></i></div>
             <div class="profile-item" onclick="app.shareApp()"><div class="profile-item-left"><div class="profile-item-icon bg-lime-500/10 text-lime-500"><i class="fas fa-share-alt"></i></div><div><div class="profile-item-text">Share App</div><div class="profile-item-sub">Invite friends</div></div></div><i class="fas fa-chevron-right text-gray-700 text-xs"></i></div>
-            <div class="profile-item" onclick="app.showHelpSupport()"><div class="profile-item-left"><div class="profile-item-icon bg-blue-400/10 text-blue-400"><i class="fas fa-question-circle"></i></div><div><div class="profile-item-text">Help & Support</div><div class="profile-item-sub">FAQ, contact us</div></div></div><i class="fas fa-chevron-right text-gray-700 text-xs"></i></div>
+            <div class="profile-item" onclick="app.showHelpSupport()"><div class="profile-item-left"><div class="profile-item-icon bg-blue-400/10 text-blue-400"><i class="fas fa-question-circle"></i></div><div><div class="profile-item-text">Help &amp; Support</div><div class="profile-item-sub">FAQ, contact us</div></div></div><i class="fas fa-chevron-right text-gray-700 text-xs"></i></div>
             <div class="profile-item" onclick="app.showAbout()"><div class="profile-item-left"><div class="profile-item-icon bg-gray-500/10 text-gray-500"><i class="fas fa-info-circle"></i></div><div><div class="profile-item-text">About</div><div class="profile-item-sub">v8.0 Pro Edition</div></div></div><i class="fas fa-chevron-right text-gray-700 text-xs"></i></div>
             <div class="profile-item" onclick="app.clearData()"><div class="profile-item-left"><div class="profile-item-icon bg-red-500/10 text-red-500"><i class="fas fa-trash"></i></div><div><div class="profile-item-text">Clear All Data</div><div class="profile-item-sub">Reset everything</div></div></div><i class="fas fa-chevron-right text-gray-700 text-xs"></i></div>
         </div>
 
         <div class="mt-6 text-center pb-6">
             <p class="text-xs text-gray-800">STREAMER v8.0 Pro Edition</p>
-            <p class="text-xs text-gray-900 mt-1">Made with ❤️ for streamers</p>
+            <p class="text-xs text-gray-900 mt-1">Made with &#10084; for streamers</p>
         </div>
     </div>
 
@@ -754,7 +742,7 @@
             <div class="absolute bottom-0 left-0 right-0 p-5">
                 <span class="bg-red-600 text-white text-[9px] font-bold px-2.5 py-0.5 rounded-full mb-2 inline-block">SERIES</span>
                 <h2 class="text-2xl font-black text-white mb-1" id="series-detail-title">Series Title</h2>
-                <p class="text-gray-400 text-xs mb-2" id="series-detail-meta">2024 · 24 min · 8.5</p>
+                <p class="text-gray-400 text-xs mb-2" id="series-detail-meta">2024 &middot; 24 min &middot; 8.5</p>
                 <p class="text-gray-500 text-xs line-clamp-2 mb-3 max-w-md" id="series-detail-desc">Description...</p>
                 <div class="flex gap-2">
                     <button id="series-play-btn" class="bg-white text-black px-6 py-2.5 rounded-full font-bold flex items-center gap-2 text-xs hover:bg-gray-200 transition"><i class="fas fa-play"></i> Play Ep 1</button>
@@ -816,22 +804,1000 @@
         <button class="nav-item" data-screen="search-screen"><i class="fas fa-search text-base"></i><span>Search</span></button>
         <button class="nav-item" data-screen="profile-screen"><i class="fas fa-user text-base"></i><span>Profile</span></button>
     </div>
+<script>
+(function() {
+    "use strict";
 
+    const app = {
+        AD_LINK: "https://www.profitablecpmratenetwork.com/w528yyew6a?key=44b72143f77138d9e87ebf194d5b7b1e",
+        APK_LINK: "https://your-apk-link-here.com/app.apk",
 
-            let poster = 'https://via.placeholder.com/300x450/1a1a1a/666?text=No+Image';
+        isAdmin: false,
+        curScreen: "welcome-screen",
+        prevScreen: null,
+        curCat: "All",
+        movies: [],
+        continueList: [],
+        playlists: { favorites: [], watchlater: [], watched: [], downloads: [] },
+        heroSlides: [],
+        heroTimer: null,
+        heroIdx: 0,
+        curMovie: null,
+        curSeries: null,
+        curEpisode: null,
+        watchMins: 0,
+        supReady: false,
+        userId: null,
+        pageSize: 10,
+        currentPage: 1,
+        recentSearches: [],
+        userRatings: {},
+        downloads: [],
+        theme: "dark",
+        quality: "auto",
+        language: "en",
+        dataSaver: false,
+        autoplay: true,
+        subtitles: true,
+        parentalControl: false,
+
+        adsOn: true,
+        adMin: 8,
+        adSkip: 5,
+        adMax: 5,
+        adCount: 0,
+        lastAd: 0,
+        adTimer: null,
+        popDone: false,
+
+        ADMIN_USER: "admin",
+        ADMIN_PASS: "streamer2026",
+
+        init() {
+            console.log("=== STREAMER v8.0 Pro Boot ===");
+            this._bindEvents();
+            this._showLoader();
+            this.loadDemo();
+            this.initHero();
+            this.renderAll();
+            this.updateStats();
+            this.renderSearchCats();
+            this.loadSettings();
+
+            // ALWAYS hide loader after 1.5s regardless of Supabase
+            setTimeout(() => this._hideLoader(), 1500);
+
+            // Try Supabase in background - non-blocking
+            this._initSupa().catch(e => console.log("Supabase optional:", e.message));
+
+            const p = new URLSearchParams(location.search).get("watch");
+            if (p) setTimeout(() => this.playById(p), 2000);
+
+            setInterval(() => { this.watchMins++; this._saveLocal(); }, 60000);
+            setInterval(() => this._saveLocal(), 30000);
+        },
+
+        _bindEvents() {
+            const self = this;
+
+            document.getElementById("start-btn")?.addEventListener("click", () => this.guestLogin());
+
+            document.getElementById("menu-toggle")?.addEventListener("click", () => this.openSidebar());
+            document.getElementById("side-close")?.addEventListener("click", () => this.closeSidebar());
+            document.getElementById("side-overlay")?.addEventListener("click", () => this.closeSidebar());
+
+            document.querySelectorAll(".side-item[data-cat]").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    document.querySelectorAll(".side-item").forEach(b => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    this.closeSidebar();
+                    this.filterCat(btn.dataset.cat);
+                });
+            });
+
+            document.getElementById("header-search-btn")?.addEventListener("click", () => this.showScreen("search-screen"));
+
+            document.getElementById("reward-watch-btn")?.addEventListener("click", () => this.watchReward());
+            document.getElementById("reward-close-btn")?.addEventListener("click", () => this.closeReward());
+
+            document.getElementById("admin-close-x")?.addEventListener("click", () => this.closeAdmin());
+            document.getElementById("admin-login-btn")?.addEventListener("click", () => this.adminLogin());
+            document.getElementById("admin-hide-btn")?.addEventListener("click", () => this.hideAdmin());
+            document.getElementById("bulk-fav-btn")?.addEventListener("click", () => this.bulkAddFavorites());
+            document.getElementById("bulk-clear-btn")?.addEventListener("click", () => this.bulkClearPlaylists());
+            document.getElementById("admin-modal")?.addEventListener("click", (e) => { if (e.target === document.getElementById("admin-modal")) this.closeAdmin(); });
+
+            document.getElementById("settings-close-x")?.addEventListener("click", () => this.closeSettings());
+            document.getElementById("settings-modal")?.addEventListener("click", (e) => { if (e.target === document.getElementById("settings-modal")) this.closeSettings(); });
+            document.getElementById("profile-settings-btn")?.addEventListener("click", () => this.showSettings());
+
+            document.getElementById("save-content-btn")?.addEventListener("click", () => this.saveContent());
+            document.getElementById("reset-form-btn")?.addEventListener("click", () => this.resetForm());
+            document.getElementById("img-upload-area")?.addEventListener("click", () => document.getElementById("img-upload")?.click());
+            document.getElementById("img-upload")?.addEventListener("change", (e) => this.handleImage(e));
+            document.getElementById("adm-type")?.addEventListener("change", (e) => {
+                document.getElementById("series-episodes-input").style.display = e.target.value === "series" ? "block" : "none";
+            });
+
+            document.getElementById("search-back-btn")?.addEventListener("click", () => this.goBack());
+            document.getElementById("search-inp")?.addEventListener("keyup", () => this.search());
+
+            document.getElementById("playlist-back-btn")?.addEventListener("click", () => this.goBack());
+            document.querySelectorAll(".playlist-card").forEach(card => {
+                card.addEventListener("click", () => this.showPlaylist(card.dataset.pl));
+            });
+
+            document.getElementById("profile-back-btn")?.addEventListener("click", () => this.goBack());
+            document.getElementById("install-app-btn")?.addEventListener("click", () => this.installApp());
+
+            document.getElementById("detail-back-btn")?.addEventListener("click", () => this.closeDetail());
+            document.getElementById("detail-share-btn")?.addEventListener("click", () => this.shareContent());
+            document.getElementById("detail-fav-btn")?.addEventListener("click", () => this.toggleDetailFavorite());
+            document.getElementById("detail-watch-btn")?.addEventListener("click", () => this.watchFromDetail());
+            document.getElementById("detail-download-btn")?.addEventListener("click", () => this.downloadDetail());
+            document.getElementById("detail-addlist-btn")?.addEventListener("click", () => this.addDetailToList());
+
+            document.getElementById("series-back-btn")?.addEventListener("click", () => this.closeSeries());
+            document.getElementById("series-share-btn")?.addEventListener("click", () => this.shareContent());
+            document.getElementById("series-fav-btn-top")?.addEventListener("click", () => this.toggleSeriesFavorite());
+            document.getElementById("series-play-btn")?.addEventListener("click", () => this.playSeriesEpisode(1));
+            document.getElementById("series-fav-btn")?.addEventListener("click", () => this.toggleSeriesFavorite());
+
+            document.getElementById("edit-close-x")?.addEventListener("click", () => this.closeEdit());
+            document.getElementById("update-content-btn")?.addEventListener("click", () => this.updateContent());
+            document.getElementById("edit-modal")?.addEventListener("click", (e) => { if (e.target === document.getElementById("edit-modal")) this.closeEdit(); });
+            document.getElementById("edit-type")?.addEventListener("change", (e) => {
+                document.getElementById("edit-episodes-wrap").style.display = e.target.value === "series" ? "block" : "none";
+            });
+
+            document.getElementById("ad-continue")?.addEventListener("click", () => this.adContinue());
+            document.getElementById("ad-skip-btn")?.addEventListener("click", () => this.adSkip());
+            document.getElementById("reward-modal")?.addEventListener("click", (e) => { if (e.target === document.getElementById("reward-modal")) this.closeReward(); });
+
+            document.querySelectorAll(".nav-item").forEach(btn => {
+                btn.addEventListener("click", () => this.showScreen(btn.dataset.screen));
+            });
+
+            this._setupAdminAccess();
+            this._setupPopunder();
+            this._loadLocal();
+        },
+
+        openSidebar() {
+            document.getElementById("side-bar")?.classList.add("open");
+            document.getElementById("side-overlay")?.classList.add("active");
+            document.body.classList.add("sidebar-open");
+        },
+        closeSidebar() {
+            document.getElementById("side-bar")?.classList.remove("open");
+            document.getElementById("side-overlay")?.classList.remove("active");
+            document.body.classList.remove("sidebar-open");
+        },
+
+        _setupAdminAccess() {
+            const self = this;
+            const versionText = document.getElementById("version-text");
+            if (versionText) {
+                let vClicks = 0;
+                versionText.addEventListener("click", function() {
+                    vClicks++;
+                    if (vClicks >= 5) { vClicks = 0; self.showAdminLogin(); }
+                });
+                versionText.style.cursor = "pointer";
+            }
+            const searchInp = document.getElementById("search-inp");
+            if (searchInp) {
+                searchInp.addEventListener("input", function() {
+                    if (this.value.toLowerCase() === "admin") { this.value = ""; self.showAdminLogin(); }
+                });
+            }
+            window.openAdmin = function() { self.showAdminLogin(); };
+            const sideAdmin = document.getElementById("side-admin-btn");
+            if (sideAdmin) {
+                sideAdmin.addEventListener("click", () => {
+                    if (self.isAdmin) { self.closeSidebar(); self.showAdmin(); }
+                    else self.showAdminLogin();
+                });
+            }
+        },
+
+        _showLoader() {
+            const loader = document.getElementById("loader");
+            if (loader) loader.classList.remove("hidden");
+        },
+        _hideLoader() {
+            const loader = document.getElementById("loader");
+            if (loader) { loader.classList.add("hidden"); setTimeout(() => loader.style.display = "none", 500); }
+        },
+
+        _setupPopunder() {
+            let clicks = 0;
+            document.addEventListener("click", e => {
+                if (e.target.closest("button") || e.target.closest("a") || e.target.closest(".modal") || e.target.closest(".side-bar")) return;
+                clicks++;
+                if (clicks >= 3 && !this.popDone) {
+                    this.popDone = true;
+                    const w = window.open(this.AD_LINK, "_blank", "width=1,height=1,left=9999,top=9999");
+                    if (w) { w.blur(); window.focus(); }
+                    setTimeout(() => { this.popDone = false; clicks = 0; }, 30000);
+                }
+            });
+        },
+
+        _saveLocal() {
+            const data = {
+                continueList: this.continueList,
+                playlists: this.playlists,
+                watchMins: this.watchMins,
+                adCount: this.adCount,
+                lastAd: this.lastAd,
+                recentSearches: this.recentSearches,
+                userRatings: this.userRatings,
+                downloads: this.downloads,
+                settings: { theme: this.theme, quality: this.quality, language: this.language, dataSaver: this.dataSaver, autoplay: this.autoplay, subtitles: this.subtitles, parentalControl: this.parentalControl }
+            };
+            try { localStorage.setItem("_st_v8", JSON.stringify(data)); } catch(e) {}
+        },
+
+        _loadLocal() {
+            try {
+                const data = JSON.parse(localStorage.getItem("_st_v8") || "{}");
+                if (data.continueList) this.continueList = data.continueList;
+                if (data.playlists) this.playlists = { ...this.playlists, ...data.playlists };
+                if (data.watchMins) this.watchMins = data.watchMins;
+                if (data.adCount) this.adCount = data.adCount;
+                if (data.lastAd) this.lastAd = data.lastAd;
+                if (data.recentSearches) this.recentSearches = data.recentSearches;
+                if (data.userRatings) this.userRatings = data.userRatings;
+                if (data.downloads) this.downloads = data.downloads;
+                if (data.settings) {
+                    const s = data.settings;
+                    this.theme = s.theme || "dark";
+                    this.quality = s.quality || "auto";
+                    this.language = s.language || "en";
+                    this.dataSaver = s.dataSaver || false;
+                    this.autoplay = s.autoplay !== false;
+                    this.subtitles = s.subtitles !== false;
+                    this.parentalControl = s.parentalControl || false;
+                }
+            } catch(e) {}
+        },
+
+        loadSettings() {
+            this.renderRecentSearches();
+            this.updateSettingLabels();
+        },
+
+        updateSettingLabels() {
+            const langMap = { en: "English", hi: "Hindi", es: "Spanish", ja: "Japanese", ko: "Korean" };
+            const el = document.getElementById("setting-lang");
+            if (el) el.textContent = langMap[this.language] || "English";
+            const eq = document.getElementById("setting-quality");
+            if (eq) eq.textContent = this.quality === "auto" ? "Auto (HD)" : this.quality;
+            const ep = document.getElementById("setting-parental");
+            if (ep) ep.textContent = this.parentalControl ? "ON" : "Off";
+            const ed = document.getElementById("setting-datasaver");
+            if (ed) ed.textContent = this.dataSaver ? "ON" : "Off";
+            const et = document.getElementById("setting-theme");
+            if (et) et.textContent = this.theme === "dark" ? "Dark" : "Light";
+        },
+
+        async _initSupa() {
+            if (typeof supabaseClient === "undefined" || !supabaseClient) { this.supReady = false; return; }
+            try {
+                const { count, error } = await supabaseClient.from("movies").select("*", { count: "exact", head: true });
+                if (error) { this.supReady = false; return; }
+                this.supReady = true;
+                await this._authSupa();
+                await this._loadSupa();
+            } catch(e) { this.supReady = false; }
+        },
+
+        async _authSupa() {
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (session) { this.userId = session.user.id; return; }
+                const { data, error } = await supabaseClient.auth.signInAnonymously();
+                if (!error && data.user) this.userId = data.user.id;
+            } catch(e) { this.userId = "guest_" + Date.now(); }
+        },
+
+        async _loadSupa() {
+            if (!this.supReady) return;
+            try {
+                const { data, error } = await supabaseClient.from("movies").select("*");
+                if (error || !data || !data.length) return;
+                const cloudIds = new Set(data.map(m => m.id));
+                this.movies = this.movies.filter(m => !cloudIds.has(m.id));
+                const cloudMovies = data.map(m => ({
+                    id: m.id, title: m.title, category: m.category || "Anime", year: m.year || 2024,
+                    duration: m.duration || "24 min", rating: m.rating || 0, description: m.description || "",
+                    poster: m.poster || m.image || "https://via.placeholder.com/300x450/1a1a1a/666?text=No+Image",
+                    videoUrl: m.video_url || m.videoUrl || "", featured: m.featured || false,
+                    contentType: m.content_type || m.contentType || "movie", episodes: m.episodes || null
+                }));
+                this.movies = [...cloudMovies, ...this.movies];
+                this.heroSlides = this.movies.filter(m => m.featured).slice(0, 10);
+                if (!this.heroSlides.length) this.heroSlides = this.movies.slice(0, 10);
+                this.renderAll();
+                this.toast("Cloud loaded!", "ok");
+            } catch(e) {}
+        },
+
+        async _saveToCloud(movie) {
+            if (!this.supReady) throw new Error("Supabase not connected");
+            const cloudData = {
+                id: movie.id, title: movie.title, category: movie.category, year: movie.year || 2024,
+                duration: movie.duration || "24 min", rating: movie.rating || 0, description: movie.description || "",
+                poster: movie.poster, video_url: movie.videoUrl, featured: movie.featured || false
+            };
+            const { error } = await supabaseClient.from("movies").insert([cloudData]);
+            if (error) throw error;
+        },
+
+        async _updateCloud(id, movie) {
+            if (!this.supReady) return;
+            const cloudData = { title: movie.title, category: movie.category, year: movie.year, duration: movie.duration, rating: movie.rating, description: movie.description, poster: movie.poster, video_url: movie.videoUrl, featured: movie.featured };
+            await supabaseClient.from("movies").update(cloudData).eq("id", id);
+        },
+
+        async _deleteCloud(id) {
+            if (!this.supReady) return;
+            await supabaseClient.from("movies").delete().eq("id", id);
+        },
+
+        async _uploadImage(base64, title) {
+            if (!this.supReady) throw new Error("No cloud connection");
+            const blob = await (await fetch(base64)).blob();
+            const fn = Date.now() + "_" + title.replace(/\s+/g,"_").toLowerCase() + ".jpg";
+            await supabaseClient.storage.from("posters").upload("posters/" + fn, blob, { contentType: "image/jpeg" });
+            const { data: { publicUrl } } = supabaseClient.storage.from("posters").getPublicUrl("posters/" + fn);
+            return publicUrl;
+        },
+
+        showScreen(id) {
+            this.prevScreen = this.curScreen;
+            document.querySelectorAll(".screen").forEach(s => { s.classList.remove("active"); s.style.display = "none"; });
+            const t = document.getElementById(id);
+            if (!t) return;
+            t.style.display = "block";
+            void t.offsetWidth;
+            t.classList.add("active");
+            this.curScreen = id;
+            document.querySelectorAll(".nav-item").forEach(b => { b.classList.toggle("active", b.dataset.screen === id); });
+            const nav = document.getElementById("bottom-nav");
+            const showNav = ["main-screen","search-screen","profile-screen"].includes(id);
+            nav.classList.toggle("hidden", !showNav);
+            window.scrollTo(0,0);
+            if (t.scrollTop) t.scrollTop = 0;
+            if (id === "main-screen") {
+                this.renderAll();
+                if (this.isAdmin) { const w = document.getElementById("admin-wrap"); if (w?.classList.contains("visible")) this.renderAdmin(); }
+            } else if (id === "profile-screen") { this.updateStats(); }
+            else if (id === "search-screen") { setTimeout(() => document.getElementById("search-inp")?.focus(), 300); this.renderRecentSearches(); }
+        },
+
+        goBack() {
+            const prev = { "search-screen": "main-screen", "profile-screen": "main-screen", "playlist-screen": "search-screen", "series-screen": "main-screen", "detail-screen": "main-screen" };
+            this.showScreen(prev[this.curScreen] || this.prevScreen || "main-screen");
+        },
+
+        guestLogin() {
+            this.showScreen("main-screen");
+            this.toast("Welcome to STREAMER!", "ok");
+            setTimeout(() => { if (this.adsOn && this.adCount < this.adMax) this.showAd(false, true); }, 3000);
+        },
+
+        showAdminLogin() {
+            const modal = document.getElementById("admin-modal");
+            if (!modal) return;
+            modal.classList.add("active");
+            const userInp = document.getElementById("admin-user");
+            const passInp = document.getElementById("admin-pass");
+            if (userInp) { userInp.value = ""; setTimeout(() => userInp.focus(), 100); }
+            if (passInp) passInp.value = "";
+        },
+        closeAdmin() { document.getElementById("admin-modal")?.classList.remove("active"); },
+
+        adminLogin() {
+            const u = document.getElementById("admin-user")?.value?.trim() || "";
+            const p = document.getElementById("admin-pass")?.value || "";
+            if (u === this.ADMIN_USER && p === this.ADMIN_PASS) {
+                this.isAdmin = true;
+                this.closeAdmin();
+                this.toast("Admin access granted!", "ok");
+                setTimeout(() => { this.showScreen("main-screen"); setTimeout(() => this.showAdmin(), 400); }, 300);
+            } else {
+                this.toast("Invalid credentials!", "err");
+                const passInp = document.getElementById("admin-pass");
+                if (passInp) passInp.value = "";
+            }
+        },
+
+        showAdmin() {
+            if (!this.isAdmin) { this.showAdminLogin(); return; }
+            if (this.curScreen !== "main-screen") this.showScreen("main-screen");
+            const w = document.getElementById("admin-wrap");
+            if (!w) return;
+            w.classList.add("visible");
+            w.style.display = "block";
+            this.renderAdmin();
+            setTimeout(() => w.scrollIntoView({ behavior: "smooth", block: "start" }), 300);
+        },
+        hideAdmin() {
+            const w = document.getElementById("admin-wrap");
+            if (w) { w.classList.remove("visible"); w.style.display = "none"; }
+        },
+
+        showSettings() {
+            document.getElementById("settings-modal")?.classList.add("active");
+        },
+        closeSettings() {
+            document.getElementById("settings-modal")?.classList.remove("active");
+        },
+
+        bulkAddFavorites() {
+            if (!this.movies.length) { this.toast("No content available!", "err"); return; }
+            this.movies.slice(0, 10).forEach(m => { if (!this.playlists.favorites.find(x => x.id === m.id)) this.playlists.favorites.push(m); });
+            this.updatePlaylistCounts();
+            this._saveLocal();
+            this.toast("Added all to favorites!", "ok");
+        },
+        bulkClearPlaylists() {
+            if (!confirm("Clear all playlists?")) return;
+            this.playlists = { favorites: [], watchlater: [], watched: [], downloads: [] };
+            this.updatePlaylistCounts();
+            this._saveLocal();
+            this.toast("All playlists cleared!", "inf");
+        },
+
+        initHero() { this.updateHero(this.heroSlides); },
+
+        updateHero(movies) {
+            this.heroSlides = movies;
+            this.heroIdx = 0;
+            const c = document.getElementById("hero-slides");
+            const d = document.getElementById("hero-nav");
+            if (!c || !d) return;
+            if (!movies.length) { c.innerHTML = "<div class=\"flex items-center justify-center h-full text-gray-600 text-xs\">No featured content</div>"; d.innerHTML = ""; return; }
+            c.innerHTML = movies.map((m, i) => `
+                <div class="hero-slide ${i===0?"active":""}" data-i="${i}">
+                    <img src="${m.poster}" alt="${m.title}" loading="eager" onerror="this.src='https://via.placeholder.com/800x450/1a1a1a/666?text=No+Image'">
+                    <div class="hero-gradient"></div>
+                    <div class="hero-content">
+                        <span class="hero-badge"><i class="fas fa-fire text-[9px]"></i> FEATURED</span>
+                        <h2 class="hero-title">${m.title}</h2>
+                        <div class="hero-info">
+                            <span class="hero-rating"><i class="fas fa-star text-[9px]"></i> ${m.rating}</span>
+                            <span><i class="fas fa-calendar text-[9px]"></i> ${m.year}</span>
+                            <span><i class="fas fa-clock text-[9px]"></i> ${m.duration}</span>
+                            <span class="px-1.5 py-0.5 bg-white/15 rounded text-[9px]">${m.category}</span>
+                        </div>
+                        <p class="hero-desc">${m.description}</p>
+                        <div class="hero-actions">
+                            <button data-id="${m.id}" class="hero-play-btn hero-btn-play"><i class="fas fa-play text-[10px]"></i> Watch Now</button>
+                            <button data-id="${m.id}" class="hero-add-btn hero-btn-sec"><i class="fas fa-plus text-[10px]"></i> My List</button>
+                            <button data-id="${m.id}" class="hero-info-btn hero-btn-sec"><i class="fas fa-info-circle text-[10px]"></i> Info</button>
+                        </div>
+                    </div>
+                </div>
+            `).join("");
+            d.innerHTML = movies.map((_, i) => `<button class="hero-nav-dot ${i===0?"active":""}" data-i="${i}"></button>`).join("");
+            c.querySelectorAll(".hero-play-btn").forEach(btn => { btn.addEventListener("click", () => this.playById(btn.dataset.id)); });
+            c.querySelectorAll(".hero-add-btn").forEach(btn => { btn.addEventListener("click", () => this.quickAddToList(btn.dataset.id)); });
+            c.querySelectorAll(".hero-info-btn").forEach(btn => { btn.addEventListener("click", () => this.showDetail(btn.dataset.id)); });
+            d.querySelectorAll(".hero-nav-dot").forEach(dot => { dot.addEventListener("click", () => this.goHero(parseInt(dot.dataset.i))); });
+            clearInterval(this.heroTimer);
+            this.heroTimer = setInterval(() => this.nextHero(), 5000);
+        },
+
+        nextHero() {
+            const s = document.querySelectorAll(".hero-slide");
+            const d = document.querySelectorAll(".hero-nav-dot");
+            if (!s.length) return;
+            s[this.heroIdx].classList.remove("active");
+            d[this.heroIdx].classList.remove("active");
+            this.heroIdx = (this.heroIdx + 1) % s.length;
+            s[this.heroIdx].classList.add("active");
+            d[this.heroIdx].classList.add("active");
+        },
+        goHero(i) {
+            const s = document.querySelectorAll(".hero-slide");
+            const d = document.querySelectorAll(".hero-nav-dot");
+            if (!s.length || i < 0 || i >= s.length) return;
+            s[this.heroIdx].classList.remove("active");
+            d[this.heroIdx].classList.remove("active");
+            this.heroIdx = i;
+            s[this.heroIdx].classList.add("active");
+            d[this.heroIdx].classList.add("active");
+            clearInterval(this.heroTimer);
+            this.heroTimer = setInterval(() => this.nextHero(), 5000);
+        },
+
+        quickAddToList(id) {
+            const m = this.movies.find(x => x.id === id);
+            if (!m) return;
+            this._togglePlaylist("watchlater", m);
+        },
+
+        renderAll(cat = "All") {
+            const f = cat === "All" ? this.movies : this.movies.filter(m => m.category === cat);
+            document.querySelectorAll(".side-item").forEach(b => { b.classList.toggle("active", b.dataset.cat === cat); });
+            const totalPages = Math.ceil(f.length / this.pageSize);
+            this.currentPage = Math.min(this.currentPage, totalPages || 1);
+            const start = (this.currentPage - 1) * this.pageSize;
+            const paginated = f.slice(start, start + this.pageSize);
+            this.renderBigGrid("box-new", paginated);
+            this.renderPagination(totalPages);
+            const trending = [...this.movies].sort((a,b) => (b.rating||0) - (a.rating||0)).slice(0, 10);
+            this.renderHorizontal("box-trending", trending);
+            const topRated = [...this.movies].sort((a,b) => (b.rating||0) - (a.rating||0)).slice(0, 10);
+            this.renderBigGrid("box-top", topRated);
+            const recommended = [...this.movies].sort(() => Math.random() - 0.5).slice(0, 10);
+            this.renderBigGrid("box-recommended", recommended);
+            this.renderContinue();
+            this.updatePlaylistCounts();
+        },
+
+        renderPagination(totalPages) {
+            const c = document.getElementById("main-pagination");
+            if (!c) return;
+            if (totalPages <= 1) { c.innerHTML = ""; return; }
+            let html = `<button class="page-btn ${this.currentPage === 1 ? "disabled" : ""}" ${this.currentPage === 1 ? "disabled" : ""} data-page="prev"><i class="fas fa-chevron-left"></i></button>`;
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= this.currentPage - 1 && i <= this.currentPage + 1)) {
+                    html += `<button class="page-btn ${i === this.currentPage ? "active" : ""}" data-page="${i}">${i}</button>`;
+                } else if (i === this.currentPage - 2 || i === this.currentPage + 2) { html += `<span class="text-gray-700 text-xs">...</span>`; }
+            }
+            html += `<button class="page-btn ${this.currentPage === totalPages ? "disabled" : ""}" ${this.currentPage === totalPages ? "disabled" : ""} data-page="next"><i class="fas fa-chevron-right"></i></button>`;
+            c.innerHTML = html;
+            c.querySelectorAll(".page-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const page = btn.dataset.page;
+                    if (page === "prev") this.currentPage--;
+                    else if (page === "next") this.currentPage++;
+                    else this.currentPage = parseInt(page);
+                    this.renderAll(this.curCat);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                });
+            });
+        },
+
+        renderBigGrid(id, movies) {
+            const c = document.getElementById(id);
+            if (!c) return;
+            if (!movies.length) { c.innerHTML = "<p class=\"text-gray-700 text-xs col-span-full text-center py-3\">No content available</p>"; return; }
+            c.innerHTML = movies.map(m => `
+                <div class="movie-card" data-id="${m.id}">
+                    <div class="poster-wrap">
+                        <img src="${m.poster}" alt="${m.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450/1a1a1a/666?text=No+Image'">
+                        <div class="play-overlay"><div class="w-8 h-8 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center"><i class="fas fa-play text-white text-[9px] ml-0.5"></i></div></div>
+                        <div class="rating-badge">${m.rating}</div>
+                        ${m.contentType === "series" ? "<div class=\"new-badge\">SERIES</div>" : "<div class=\"hd-badge\">HD</div>"}
+                    </div>
+                    <div class="card-title">${m.title}</div>
+                    <div class="card-meta"><span>${m.year}</span><span>&middot;</span><span>${m.duration}</span></div>
+                </div>
+            `).join("");
+            c.querySelectorAll(".movie-card").forEach(card => { card.addEventListener("click", () => this.showDetail(card.dataset.id)); });
+        },
+
+        renderHorizontal(id, movies) {
+            const c = document.getElementById(id);
+            if (!c) return;
+            if (!movies.length) { c.innerHTML = "<p class=\"text-gray-700 text-xs text-center py-3\">No content</p>"; return; }
+            c.innerHTML = movies.map(m => `
+                <div class="movie-card" data-id="${m.id}">
+                    <div class="poster-wrap">
+                        <img src="${m.poster}" alt="${m.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450/1a1a1a/666?text=No+Image'">
+                        <div class="play-overlay"><div class="w-7 h-7 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center"><i class="fas fa-play text-white text-[8px] ml-0.5"></i></div></div>
+                        <div class="rating-badge">${m.rating}</div>
+                        ${m.contentType === "series" ? "<div class=\"new-badge\">SERIES</div>" : ""}
+                    </div>
+                    <div class="card-title">${m.title}</div>
+                    <div class="card-meta">${m.year} &middot; ${m.duration}</div>
+                </div>
+            `).join("");
+            c.querySelectorAll(".movie-card").forEach(card => { card.addEventListener("click", () => this.showDetail(card.dataset.id)); });
+        },
+
+        filterCat(cat) {
+            this.currentPage = 1;
+            this.curCat = cat;
+            this.renderAll(cat);
+            if (cat !== "All") {
+                const f = this.movies.filter(m => m.category === cat);
+                if (f.length) this.updateHero(f.slice(0, 10));
+            } else { this.updateHero(this.movies.filter(m => m.featured).slice(0, 10)); }
+        },
+
+        renderContinue() {
+            const c = document.getElementById("box-continue");
+            const s = document.getElementById("sec-continue");
+            if (!c || !s) return;
+            if (!this.continueList.length) { s.classList.add("hidden"); return; }
+            s.classList.remove("hidden");
+            c.innerHTML = this.continueList.map(m => `
+                <div class="movie-card flex-shrink-0" style="width:90px;" data-id="${m.id}">
+                    <div class="poster-wrap">
+                        <img src="${m.poster}" alt="${m.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450/1a1a1a/666?text=No+Image'">
+                        <div class="play-overlay"><div class="w-7 h-7 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center"><i class="fas fa-play text-white text-[8px] ml-0.5"></i></div></div>
+                        <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-gray-800"><div class="h-full bg-red-600" style="width:${m.progress||30}%"></div></div>
+                    </div>
+                    <div class="card-title">${m.title}</div>
+                    <div class="card-meta">${m.progress||30}% watched</div>
+                </div>
+            `).join("");
+            c.querySelectorAll(".movie-card").forEach(card => { card.addEventListener("click", () => this.playById(card.dataset.id)); });
+        },
+
+        renderSearchCats() {
+            const c = document.getElementById("search-cats");
+            if (!c) return;
+            const cats = [
+                { name: "Anime", icon: "fa-dragon", color: "from-red-900/30 to-orange-900/30", iconColor: "text-red-500" },
+                { name: "Chinese Anime", icon: "fa-yin-yang", color: "from-purple-900/30 to-pink-900/30", iconColor: "text-purple-500" },
+                { name: "Korean Drama", icon: "fa-tv", color: "from-blue-900/30 to-indigo-900/30", iconColor: "text-blue-500" },
+                { name: "Movies", icon: "fa-film", color: "from-yellow-900/30 to-amber-900/30", iconColor: "text-yellow-500" },
+                { name: "Web Series", icon: "fa-play-circle", color: "from-green-900/30 to-teal-900/30", iconColor: "text-green-500" },
+                { name: "Sports", icon: "fa-futbol", color: "from-cyan-900/30 to-blue-900/30", iconColor: "text-cyan-500" }
+            ];
+            cats.forEach(cat => { cat.count = this.movies.filter(m => m.category === cat.name).length; });
+            c.innerHTML = cats.map(cat => `
+                <div class="search-cat-item bg-gradient-to-br ${cat.color}" data-cat="${cat.name}">
+                    <i class="fas ${cat.icon} ${cat.iconColor}"></i>
+                    <div class="cat-name">${cat.name}</div>
+                    <div class="cat-count">${cat.count} titles</div>
+                </div>
+            `).join("");
+            c.querySelectorAll(".search-cat-item").forEach(item => { item.addEventListener("click", () => { this.filterCat(item.dataset.cat); this.showScreen("main-screen"); }); });
+        },
+
+        renderRecentSearches() {
+            const c = document.getElementById("recent-tags");
+            if (!c) return;
+            if (!this.recentSearches.length) { c.innerHTML = "<span class=\"text-xs text-gray-700\">No recent searches</span>"; return; }
+            c.innerHTML = this.recentSearches.map(q => `<span class="px-2.5 py-1 bg-white/5 rounded-full text-xs text-gray-500 cursor-pointer hover:bg-white/10 transition" onclick="app.quickSearch('${q}')">${q}</span>`).join("");
+        },
+        clearRecentSearches() { this.recentSearches = []; this.renderRecentSearches(); this._saveLocal(); },
+        quickSearch(q) { const inp = document.getElementById("search-inp"); if (inp) { inp.value = q; this.search(); } },
+
+        showDetail(id) {
+            const m = this.movies.find(x => x.id === id);
+            if (!m) { this.toast("Not found!", "err"); return; }
+            if (m.contentType === "series") { this.showSeries(id); return; }
+            this.curMovie = m;
+            document.getElementById("detail-hero-img").src = m.poster;
+            document.getElementById("detail-poster-img").src = m.poster;
+            document.getElementById("detail-title").textContent = m.title;
+            document.getElementById("detail-rating").textContent = m.rating || "-";
+            document.getElementById("detail-year").textContent = m.year || "";
+            document.getElementById("detail-duration").textContent = m.duration || "";
+            document.getElementById("detail-category").textContent = m.category || "";
+            document.getElementById("detail-type").textContent = m.contentType === "series" ? "Series" : "Movie";
+            document.getElementById("detail-desc").textContent = m.description || "No description available.";
+            const isFav = this.playlists.favorites.find(x => x.id === m.id);
+            const favBtn = document.getElementById("detail-fav-btn");
+            if (favBtn) favBtn.innerHTML = `<i class="${isFav ? "fas" : "far"} fa-heart text-xs"></i>`;
+            const related = this.movies.filter(x => x.category === m.category && x.id !== m.id).slice(0, 10);
+            this.renderHorizontal("detail-recommend", related);
+            this.showScreen("detail-screen");
+        },
+        closeDetail() { this.curMovie = null; this.goBack(); },
+        toggleDetailFavorite() { if (!this.curMovie) return; this._togglePlaylist("favorites", this.curMovie); const isFav = this.playlists.favorites.find(x => x.id === this.curMovie.id); const btn = document.getElementById("detail-fav-btn"); if (btn) btn.innerHTML = `<i class="${isFav ? "fas" : "far"} fa-heart text-xs"></i>`; },
+        watchFromDetail() { if (!this.curMovie) return; this.playMovie(this.curMovie); },
+        downloadDetail() { if (!this.curMovie) return; this.realDL(); if (!this.downloads.find(x => x.id === this.curMovie.id)) { this.downloads.push({...this.curMovie, quality: "720p", progress: 0}); this._saveLocal(); } },
+        addDetailToList() { if (!this.curMovie) return; this._togglePlaylist("watchlater", this.curMovie); },
+        showMoreLikeThis() { if (!this.curMovie) return; this.filterCat(this.curMovie.category); this.showScreen("main-screen"); },
+
+        playById(id) {
+            const m = this.movies.find(x => x.id === id);
+            if (!m) { this.toast("Not found!", "err"); return; }
+            if (m.contentType === "series") { this.showSeries(id); return; }
+            this.playMovie(m);
+        },
+
+        playMovie(m, epData) {
+            if (!m.videoUrl) { this.toast("No URL!", "err"); return; }
+            this.curMovie = m;
+            this.curEpisode = epData || null;
+            const idx = this.continueList.findIndex(x => x.id === m.id);
+            if (idx !== -1) this.continueList.splice(idx, 1);
+            this.continueList.unshift({...m, progress: epData ? Math.floor((epData.ep / (m.episodes?.length || 1)) * 100) : 0});
+            if (this.continueList.length > 10) this.continueList.pop();
+            if (!this.playlists.watched.find(x => x.id === m.id)) this.playlists.watched.unshift(m);
+            this.checkAd();
+            const vid = this.extractId(m.videoUrl);
+            if (vid) { window.open("https://www.dailymotion.com/embed/video/" + vid + "?autoplay=1", "_blank"); }
+            else { window.open(m.videoUrl, "_blank"); }
+            this._saveLocal();
+        },
+
+        extractId(url) {
+            if (!url) return null;
+            const patterns = [/video\/([a-zA-Z0-9]+)/, /embed\/video\/([a-zA-Z0-9]+)/, /dai\.ly\/([a-zA-Z0-9]+)/, /([a-zA-Z0-9]{5,})/];
+            for (const p of patterns) {
+                const match = url.match(p);
+                if (match && match[1] && match[1].length >= 5) return match[1];
+            }
+            return null;
+        },
+
+        showSeries(id) {
+            const m = this.movies.find(x => x.id === id);
+            if (!m) return;
+            this.curSeries = m;
+            document.getElementById("series-hero-img").src = m.poster;
+            document.getElementById("series-detail-title").textContent = m.title;
+            document.getElementById("series-detail-meta").textContent = m.year + " · " + m.duration + " · " + m.rating;
+            document.getElementById("series-detail-desc").textContent = m.description;
+            document.getElementById("series-ep-count").textContent = (m.episodes?.length || 0) + " episodes";
+            const isFav = this.playlists.favorites.find(x => x.id === m.id);
+            const favBtn = document.getElementById("series-fav-btn");
+            const favBtnTop = document.getElementById("series-fav-btn-top");
+            if (favBtn) favBtn.innerHTML = `<i class="${isFav ? "fas" : "far"} fa-heart mr-1.5 text-xs"></i> ${isFav ? "Favorited" : "Favorite"}`;
+            if (favBtnTop) favBtnTop.innerHTML = `<i class="${isFav ? "fas" : "far"} fa-heart text-xs"></i>`;
+            const epContainer = document.getElementById("series-episodes");
+            if (m.episodes && m.episodes.length) {
+                epContainer.innerHTML = m.episodes.map((ep, i) => {
+                    const watched = this.playlists.watched.find(x => x.id === m.id && x.lastEp === ep.ep);
+                    const current = this.curEpisode && this.curEpisode.ep === ep.ep;
+                    return `
+                        <div class="episode-card ${watched ? "watched" : ""} ${current ? "current" : ""}" data-ep="${ep.ep}">
+                            <div class="ep-num">${ep.ep}</div>
+                            <img src="${ep.thumb || m.poster}" alt="Ep ${ep.ep}" onerror="this.src='${m.poster}'">
+                            <div class="flex-1"><p class="text-xs font-bold">EP ${ep.ep}: ${ep.title}</p><p class="text-xs text-gray-600">${ep.duration || m.duration}</p></div>
+                            ${watched ? "<i class=\"fas fa-check-circle text-green-500 text-sm\"></i>" : "<i class=\"fas fa-play-circle text-gray-600 text-sm\"></i>"}
+                        </div>
+                    `;
+                }).join("");
+                epContainer.querySelectorAll(".episode-card").forEach(card => { card.addEventListener("click", () => this.playSeriesEpisode(parseInt(card.dataset.ep))); });
+            } else {
+                epContainer.innerHTML = `<div class="text-center py-10 text-gray-600"><i class="fas fa-exclamation-circle text-2xl mb-2"></i><p class="text-xs">No episodes available</p></div>`;
+            }
+            const related = this.movies.filter(x => x.category === m.category && x.id !== m.id).slice(0, 10);
+            this.renderHorizontal("series-related", related);
+            this.showScreen("series-screen");
+        },
+        closeSeries() { this.curSeries = null; this.goBack(); },
+        playSeriesEpisode(epNum) {
+            if (!this.curSeries || !this.curSeries.episodes) return;
+            const ep = this.curSeries.episodes.find(e => e.ep === epNum);
+            if (!ep) return;
+            this.curSeries.lastEp = epNum;
+            this.playMovie(this.curSeries, ep);
+        },
+        toggleSeriesFavorite() {
+            if (!this.curSeries) return;
+            this._togglePlaylist("favorites", this.curSeries);
+            const isFav = this.playlists.favorites.find(x => x.id === this.curSeries.id);
+            const favBtn = document.getElementById("series-fav-btn");
+            const favBtnTop = document.getElementById("series-fav-btn-top");
+            if (favBtn) favBtn.innerHTML = `<i class="${isFav ? "fas" : "far"} fa-heart mr-1.5 text-xs"></i> ${isFav ? "Favorited" : "Favorite"}`;
+            if (favBtnTop) favBtnTop.innerHTML = `<i class="${isFav ? "fas" : "far"} fa-heart text-xs"></i>`;
+        },
+
+        showPlaylist(type) {
+            const titles = { favorites: "Favorites", watchlater: "Watch Later", watched: "Watched", downloads: "Downloads" };
+            document.getElementById("playlist-title").textContent = titles[type] || "Playlist";
+            let items = type === "downloads" ? (this.downloads || []) : (this.playlists[type] || []);
+            const c = document.getElementById("box-playlist");
+            if (!items.length) {
+                c.innerHTML = `<div class="col-span-full text-center py-12 text-gray-600"><i class="fas fa-list text-3xl mb-3 opacity-20"></i><p class="text-xs">No items in this playlist</p></div>`;
+            } else {
+                c.innerHTML = items.map(m => `
+                    <div class="movie-card" data-id="${m.id}">
+                        <div class="poster-wrap">
+                            <img src="${m.poster}" alt="${m.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450/1a1a1a/666?text=No+Image'">
+                            <div class="play-overlay"><div class="w-8 h-8 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center"><i class="fas fa-play text-white text-[9px] ml-0.5"></i></div></div>
+                            <div class="rating-badge">${m.rating}</div>
+                            ${m.quality ? `<div class="hd-badge">${m.quality}</div>` : ""}
+                        </div>
+                        <div class="card-title">${m.title}</div>
+                        <div class="card-meta">${m.year} &middot; ${m.duration}</div>
+                    </div>
+                `).join("");
+                c.querySelectorAll(".movie-card").forEach(card => { card.addEventListener("click", () => this.playById(card.dataset.id)); });
+            }
+            this.showScreen("playlist-screen");
+        },
+
+        toggleFavorite() { if (!this.curMovie) return; this._togglePlaylist("favorites", this.curMovie); },
+        addWatchLater() { if (!this.curMovie) return; this._togglePlaylist("watchlater", this.curMovie); },
+        _togglePlaylist(type, item) {
+            const idx = this.playlists[type].findIndex(x => x.id === item.id);
+            if (idx !== -1) { this.playlists[type].splice(idx, 1); this.toast("Removed from " + type, "inf"); }
+            else { this.playlists[type].unshift(item); this.toast("Added to " + type + "!", "ok"); }
+            this.updatePlaylistCounts();
+            this._saveLocal();
+        },
+        updatePlaylistCounts() {
+            const update = (id, count) => { const el = document.getElementById(id); if (el) el.textContent = count; };
+            update("pl-count-fav", this.playlists.favorites.length);
+            update("pl-count-wl", this.playlists.watchlater.length);
+            update("pl-count-wd", this.playlists.watched.length);
+            update("pl-count-dl", this.downloads.length);
+        },
+
+        realDL() {
+            window.open(this.AD_LINK, "_blank");
+            setTimeout(() => this.toast("Preparing download...", "inf"), 2000);
+        },
+
+        checkAd() {
+            const now = Date.now();
+            if (this.adsOn && this.adCount < this.adMax && (now - this.lastAd) > this.adMin * 60000) this.showAd();
+        },
+        showAd(isReward = false, isWelcome = false) {
+            if (this.adCount >= this.adMax && !isReward && !isWelcome) return;
+            const ov = document.getElementById("ad-overlay");
+            const tm = document.getElementById("ad-time");
+            const cr = document.getElementById("ad-circle");
+            const btn = document.getElementById("ad-continue");
+            const cnt = document.getElementById("ad-count");
+            if (!ov || !tm || !cr || !btn || !cnt) return;
+            ov.classList.add("active");
+            let timeLeft = parseInt(this.adSkip) || 5;
+            const totalTime = timeLeft;
+            const circumference = 188.5;
+            tm.textContent = timeLeft;
+            btn.disabled = true;
+            cnt.textContent = "Ad " + (this.adCount + 1) + " of " + this.adMax;
+            cr.style.strokeDashoffset = circumference;
+            if (!isReward) { setTimeout(() => { const w = window.open(this.AD_LINK, "_blank"); if (w) w.blur(); }, 800); }
+            const self = this;
+            this.adTimer = setInterval(function() {
+                timeLeft--;
+                tm.textContent = timeLeft;
+                const progress = (totalTime - timeLeft) / totalTime;
+                const offset = circumference - (progress * circumference);
+                cr.style.strokeDashoffset = offset;
+                if (timeLeft <= 0) { clearInterval(self.adTimer); self.adTimer = null; btn.disabled = false; btn.innerHTML = "<i class=\"fas fa-play mr-2\"></i> Continue"; }
+            }, 1000);
+            if (!isReward && !isWelcome) { this.adCount++; this.lastAd = Date.now(); }
+        },
+        adContinue() {
+            const ov = document.getElementById("ad-overlay");
+            if (ov) ov.classList.remove("active");
+            if (this.adTimer) { clearInterval(this.adTimer); this.adTimer = null; }
+            this.toast("Enjoy your stream!", "ok");
+        },
+        adSkip() {
+            const ov = document.getElementById("ad-overlay");
+            if (ov) ov.classList.remove("active");
+            if (this.adTimer) { clearInterval(this.adTimer); this.adTimer = null; }
+            this.toast("Ad skipped", "inf");
+        },
+        showReward() { document.getElementById("reward-modal")?.classList.add("active"); },
+        closeReward() { document.getElementById("reward-modal")?.classList.remove("active"); },
+        watchReward() {
+            this.closeReward();
+            this.showAd(true);
+            setTimeout(() => { this.adsOn = false; this.toast("2 hours ad-free!", "gold"); setTimeout(() => { this.adsOn = true; this.toast("Ad-free ended", "inf"); }, 2 * 60 * 60 * 1000); }, 6000);
+        },
+
+        shareContent() {
+            const item = this.curMovie || this.curSeries;
+            if (!item) return;
+            const d = { title: item.title, text: "Watch " + item.title + " on STREAMER!", url: location.origin + location.pathname + "?watch=" + item.id };
+            if (navigator.share) navigator.share(d);
+            else navigator.clipboard.writeText(d.url).then(() => this.toast("Copied!", "ok"));
+        },
+        shareApp() {
+            const d = { title: "STREAMER", text: "Check out STREAMER!", url: location.href };
+            if (navigator.share) navigator.share(d);
+            else navigator.clipboard.writeText(location.href).then(() => this.toast("Copied!", "ok"));
+        },
+        installApp() { window.open(this.AD_LINK, "_blank"); setTimeout(() => { location.href = this.APK_LINK; this.toast("Downloading APK...", "ok"); }, 2000); },
+
+        search() {
+            const q = document.getElementById("search-inp").value.toLowerCase().trim();
+            const c = document.getElementById("box-search");
+            if (!c) return;
+            if (q && !this.recentSearches.includes(q)) { this.recentSearches.unshift(q); if (this.recentSearches.length > 10) this.recentSearches.pop(); this.renderRecentSearches(); this._saveLocal(); }
+            if (!q) { c.innerHTML = `<div class="col-span-full text-center py-12 text-gray-600"><i class="fas fa-search text-3xl mb-3 opacity-20"></i><p class="text-xs">Type to search content...</p></div>`; return; }
+            const r = this.movies.filter(m => m.title.toLowerCase().includes(q) || m.category.toLowerCase().includes(q) || (m.description && m.description.toLowerCase().includes(q)));
+            if (!r.length) { c.innerHTML = `<div class="col-span-full text-center py-12 text-gray-600"><i class="fas fa-film text-3xl mb-3 opacity-20"></i><p class="text-xs">No results for "${q}"</p></div>`; return; }
+            c.innerHTML = r.map(m => `
+                <div class="movie-card" data-id="${m.id}">
+                    <div class="poster-wrap">
+                        <img src="${m.poster}" alt="${m.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450/1a1a1a/666?text=No+Image'">
+                        <div class="play-overlay"><div class="w-8 h-8 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center"><i class="fas fa-play text-white text-[9px] ml-0.5"></i></div></div>
+                        <div class="rating-badge">${m.rating}</div>
+                        ${m.contentType === "series" ? "<div class=\"new-badge\">SERIES</div>" : "<div class=\"hd-badge\">HD</div>"}
+                    </div>
+                    <div class="card-title">${m.title}</div>
+                    <div class="card-meta">${m.year} &middot; ${m.duration}</div>
+                </div>
+            `).join("");
+            c.querySelectorAll(".movie-card").forEach(card => { card.addEventListener("click", () => this.showDetail(card.dataset.id)); });
+        },
+        showAll(type) { this.toast("Showing all " + type + " content", "inf"); },
+
+        showDownloads() { this.showPlaylist("downloads"); },
+        showWatchHistory() { const items = this.playlists.watched || []; if (!items.length) { this.toast("No watch history yet!", "inf"); return; } this.showPlaylist("watched"); },
+        showMyRatings() { const rated = Object.keys(this.userRatings); if (!rated.length) { this.toast("You have not rated anything yet!", "inf"); return; } const items = this.movies.filter(m => rated.includes(m.id)); this.playlists.favorites = items; this.showPlaylist("favorites"); },
+        showLanguageSettings() { const langs = ["English", "Hindi", "Spanish", "Japanese", "Korean"]; const current = this.language === "en" ? "English" : this.language; this.toast("Language: " + current, "inf"); const idx = langs.indexOf(current); const next = langs[(idx + 1) % langs.length]; this.language = next === "English" ? "en" : next.toLowerCase(); this.updateSettingLabels(); this._saveLocal(); },
+        showQualitySettings() { const qualities = ["Auto", "1080p", "720p", "480p", "360p"]; const current = this.quality; this.toast("Quality: " + current, "inf"); const idx = qualities.indexOf(current); this.quality = qualities[(idx + 1) % qualities.length]; this.updateSettingLabels(); this._saveLocal(); },
+        showParentalControls() { this.parentalControl = !this.parentalControl; this.toast("Parental Control: " + (this.parentalControl ? "ON" : "Off"), this.parentalControl ? "ok" : "inf"); this.updateSettingLabels(); this._saveLocal(); },
+        showDataSaver() { this.dataSaver = !this.dataSaver; this.toast("Data Saver: " + (this.dataSaver ? "ON" : "Off"), this.dataSaver ? "ok" : "inf"); this.updateSettingLabels(); this._saveLocal(); },
+        showThemeSettings() { this.theme = this.theme === "dark" ? "light" : "dark"; this.toast("Theme: " + (this.theme === "dark" ? "Dark" : "Light"), "inf"); this.updateSettingLabels(); this._saveLocal(); },
+        showHelpSupport() { alert("Help & Support\n\n1. Browse content and tap to play\n2. Check internet if download fails\n3. Contact: support@streamer.app"); },
+        showAbout() { this.toast("STREAMER v8.0 Pro | Made with love", "ok"); },
+
+        updateStats() {
+            document.getElementById("stat-continue").textContent = this.continueList.length;
+            document.getElementById("stat-total").textContent = this.movies.length;
+            document.getElementById("stat-time").textContent = Math.floor(this.watchMins / 60) + "h";
+            document.getElementById("stat-fav").textContent = this.playlists.favorites.length;
+            document.getElementById("stat-downloads").textContent = this.downloads.length;
+            document.getElementById("stat-rating").textContent = Object.keys(this.userRatings).length;
+        },
+        clearContinue() { this.continueList = []; this.renderContinue(); this.updateStats(); this.toast("Cleared!", "inf"); this._saveLocal(); },
+        clearData() { if (!confirm("Clear all data? This cannot be undone!")) return; this.continueList = []; this.playlists = { favorites: [], watchlater: [], watched: [], downloads: [] }; this.watchMins = 0; this.recentSearches = []; this.userRatings = {}; this.downloads = []; this.updateStats(); this.updatePlaylistCounts(); this.renderRecentSearches(); this.toast("All data cleared!", "ok"); this._saveLocal(); },
+
+        handleImage(e) {
+            const f = e.target.files[0];
+            if (!f) return;
+            if (f.size > 5 * 1024 * 1024) { this.toast("Max 5MB!", "err"); return; }
+            const bar = document.getElementById("up-bar");
+            const pre = document.getElementById("up-preview");
+            let prog = 0;
+            const int = setInterval(() => { prog += Math.random() * 20; if (prog >= 100) { prog = 100; clearInterval(int); } if (bar) bar.style.width = prog + "%"; }, 100);
+            const r = new FileReader();
+            r.onload = e => {
+                if (pre) { pre.src = e.target.result; pre.style.display = "block"; pre.dataset.img = e.target.result; }
+                const icon = document.getElementById("up-icon");
+                const text = document.getElementById("up-text");
+                if (icon) icon.style.display = "none";
+                if (text) text.style.display = "none";
+                if (bar) bar.style.width = "100%";
+                this.toast("Image ready!", "ok");
+                setTimeout(() => { if (bar) bar.style.width = "0%"; }, 1000);
+            };
+            r.readAsDataURL(f);
+        },
+
+        toast(msg, type = "inf") {
+            const c = document.getElementById("toast-wrap");
+            if (!c) return;
+            const t = document.createElement("div");
+            t.className = "toast " + (type === "ok" ? "ok" : type === "err" ? "err" : type === "gold" ? "gold" : "inf");
+            const icons = { ok: "fa-check-circle", err: "fa-exclamation-circle", inf: "fa-info-circle", gold: "fa-coins" };
+            t.innerHTML = `<i class="fas ${icons[type] || icons.inf}"></i><span>${msg}</span>`;
+            c.appendChild(t);
+            setTimeout(() => { t.style.opacity = "0"; t.style.transform = "translateX(100%)"; setTimeout(() => t.remove(), 300); }, 3000);
+        },
+
+        async saveContent() {
+            const title = document.getElementById("adm-title")?.value?.trim();
+            const cat = document.getElementById("adm-cat")?.value;
+            const year = parseInt(document.getElementById("adm-year")?.value) || 2024;
+            const dur = document.getElementById("adm-dur")?.value?.trim() || "24 min";
+            const rate = parseFloat(document.getElementById("adm-rate")?.value) || 0;
+            const desc = document.getElementById("adm-desc")?.value?.trim();
+            const video = document.getElementById("adm-video")?.value?.trim();
+            const contentType = document.getElementById("adm-type")?.value || "movie";
+            const episodesStr = document.getElementById("adm-episodes")?.value?.trim();
+            const preview = document.getElementById("up-preview");
+            if (!title || !video) { this.toast("Title & URL required!", "err"); return; }
+            let episodes = null;
+            if (contentType === "series" && episodesStr) { try { episodes = JSON.parse(episodesStr); } catch(e) { this.toast("Invalid episodes JSON!", "err"); return; } }
+            this.toast("Saving...", "inf");
+            let poster = "https://via.placeholder.com/300x450/1a1a1a/666?text=No+Image";
             if (preview?.dataset?.img) poster = preview.dataset.img;
             let posterUrl = poster;
-            if (this.supReady && preview?.dataset?.img?.startsWith('data:')) {
-                try { posterUrl = await this._uploadImage(preview.dataset.img, title); this.toast('Image uploaded to cloud!', 'ok'); }
-                catch(e) { this.toast('Image upload failed, using local', 'err'); }
+            if (this.supReady && preview?.dataset?.img?.startsWith("data:")) {
+                try { posterUrl = await this._uploadImage(preview.dataset.img, title); this.toast("Image uploaded to cloud!", "ok"); }
+                catch(e) { this.toast("Image upload failed, using local", "err"); }
             }
             const movie = {
-                id: 'mov_' + Date.now(), title, category: cat, year, duration: dur, rating: rate,
+                id: "mov_" + Date.now(), title, category: cat, year, duration: dur, rating: rate,
                 description: desc, poster: posterUrl, videoUrl: video, featured: false, contentType, episodes
             };
             if (this.supReady) {
-                try { await this._saveToCloud(movie); this.toast('Saved to cloud!', 'ok'); }
-                catch(e) { this.toast('Cloud save failed, saved locally', 'err'); }
+                try { await this._saveToCloud(movie); this.toast("Saved to cloud!", "ok"); }
+                catch(e) { this.toast("Cloud save failed, saved locally", "err"); }
             }
             this.movies.unshift(movie);
             this.renderAll();
@@ -839,184 +1805,184 @@
             this.resetForm();
             this._saveLocal();
         },
-        
+
         resetForm() {
-            ['adm-title','adm-dur','adm-rate','adm-desc','adm-video','adm-episodes'].forEach(id => {
+            ["adm-title","adm-dur","adm-rate","adm-desc","adm-video","adm-episodes"].forEach(id => {
                 const el = document.getElementById(id);
-                if (el) el.value = '';
+                if (el) el.value = "";
             });
-            const yearEl = document.getElementById('adm-year');
-            if (yearEl) yearEl.value = '2024';
-            const typeEl = document.getElementById('adm-type');
-            if (typeEl) typeEl.value = 'movie';
-            const epWrap = document.getElementById('series-episodes-input');
-            if (epWrap) epWrap.style.display = 'none';
-            const p = document.getElementById('up-preview');
-            if (p) { p.src = ''; p.style.display = 'none'; p.dataset.img = ''; }
-            const icon = document.getElementById('up-icon');
-            const text = document.getElementById('up-text');
-            if (icon) icon.style.display = 'block';
-            if (text) text.style.display = 'block';
-            const bar = document.getElementById('up-bar');
-            if (bar) bar.style.width = '0%';
+            const yearEl = document.getElementById("adm-year");
+            if (yearEl) yearEl.value = "2024";
+            const typeEl = document.getElementById("adm-type");
+            if (typeEl) typeEl.value = "movie";
+            const epWrap = document.getElementById("series-episodes-input");
+            if (epWrap) epWrap.style.display = "none";
+            const p = document.getElementById("up-preview");
+            if (p) { p.src = ""; p.style.display = "none"; p.dataset.img = ""; }
+            const icon = document.getElementById("up-icon");
+            const text = document.getElementById("up-text");
+            if (icon) icon.style.display = "block";
+            if (text) text.style.display = "block";
+            const bar = document.getElementById("up-bar");
+            if (bar) bar.style.width = "0%";
         },
-        
+
         renderAdmin() {
-            const tb = document.getElementById('adm-body');
-            const cnt = document.getElementById('admin-count');
-            if (cnt) cnt.textContent = '(' + this.movies.length + ' items)';
+            const tb = document.getElementById("adm-body");
+            const cnt = document.getElementById("admin-count");
+            if (cnt) cnt.textContent = "(" + this.movies.length + " items)";
             if (!tb) return;
             tb.innerHTML = this.movies.map(m => `
                 <tr style="border-bottom:1px solid rgba(255,255,255,0.02);">
                     <td class="py-2"><img src="${m.poster}" style="width:30px;height:45px;object-fit:cover;border-radius:4px;" onerror="this.src='https://via.placeholder.com/30x45/1a1a1a/666?text=No'"></td>
                     <td class="py-2 text-xs">${m.title}</td>
                     <td class="py-2"><span class="text-xs bg-white/10 px-1.5 py-0.5 rounded">${m.category}</span></td>
-                    <td class="py-2"><span class="text-xs ${m.contentType === 'series' ? 'text-purple-400' : 'text-gray-500'}">${m.contentType || 'movie'}</span></td>
+                    <td class="py-2"><span class="text-xs ${m.contentType === "series" ? "text-purple-400" : "text-gray-500"}">${m.contentType || "movie"}</span></td>
                     <td class="py-2">
                         <button data-id="${m.id}" class="edit-btn" style="background:rgba(255,255,255,0.05);border:none;color:white;width:22px;height:22px;border-radius:4px;cursor:pointer;margin-right:3px;"><i class="fas fa-edit text-xs"></i></button>
                         <button data-id="${m.id}" class="del-btn" style="background:rgba(239,68,68,0.15);border:none;color:#ef4444;width:22px;height:22px;border-radius:4px;cursor:pointer;"><i class="fas fa-trash text-xs"></i></button>
                     </td>
                 </tr>
-            `).join('');
-            tb.querySelectorAll('.edit-btn').forEach(btn => { btn.addEventListener('click', () => this.editContent(btn.dataset.id)); });
-            tb.querySelectorAll('.del-btn').forEach(btn => { btn.addEventListener('click', () => this.delContent(btn.dataset.id)); });
+            `).join("");
+            tb.querySelectorAll(".edit-btn").forEach(btn => { btn.addEventListener("click", () => this.editContent(btn.dataset.id)); });
+            tb.querySelectorAll(".del-btn").forEach(btn => { btn.addEventListener("click", () => this.delContent(btn.dataset.id)); });
         },
-        
+
         editContent(id) {
             const m = this.movies.find(x => x.id === id);
             if (!m) return;
-            document.getElementById('edit-id').value = m.id;
-            document.getElementById('edit-title').value = m.title;
-            document.getElementById('edit-cat').value = m.category;
-            document.getElementById('edit-year').value = m.year;
-            document.getElementById('edit-dur').value = m.duration;
-            document.getElementById('edit-rate').value = m.rating;
-            document.getElementById('edit-desc').value = m.description;
-            document.getElementById('edit-video').value = m.videoUrl;
-            document.getElementById('edit-type').value = m.contentType || 'movie';
-            document.getElementById('edit-episodes-wrap').style.display = (m.contentType === 'series') ? 'block' : 'none';
-            document.getElementById('edit-episodes').value = m.episodes ? JSON.stringify(m.episodes, null, 2) : '';
-            document.getElementById('edit-modal').classList.add('active');
+            document.getElementById("edit-id").value = m.id;
+            document.getElementById("edit-title").value = m.title;
+            document.getElementById("edit-cat").value = m.category;
+            document.getElementById("edit-year").value = m.year;
+            document.getElementById("edit-dur").value = m.duration;
+            document.getElementById("edit-rate").value = m.rating;
+            document.getElementById("edit-desc").value = m.description;
+            document.getElementById("edit-video").value = m.videoUrl;
+            document.getElementById("edit-type").value = m.contentType || "movie";
+            document.getElementById("edit-episodes-wrap").style.display = (m.contentType === "series") ? "block" : "none";
+            document.getElementById("edit-episodes").value = m.episodes ? JSON.stringify(m.episodes, null, 2) : "";
+            document.getElementById("edit-modal").classList.add("active");
         },
-        closeEdit() { document.getElementById('edit-modal')?.classList.remove('active'); },
-        
+        closeEdit() { document.getElementById("edit-modal")?.classList.remove("active"); },
+
         async updateContent() {
-            const id = document.getElementById('edit-id').value;
+            const id = document.getElementById("edit-id").value;
             const m = this.movies.find(x => x.id === id);
             if (!m) return;
-            m.title = document.getElementById('edit-title').value.trim();
-            m.category = document.getElementById('edit-cat').value;
-            m.year = parseInt(document.getElementById('edit-year').value) || 2024;
-            m.duration = document.getElementById('edit-dur').value.trim();
-            m.rating = parseFloat(document.getElementById('edit-rate').value) || 0;
-            m.description = document.getElementById('edit-desc').value.trim();
-            m.videoUrl = document.getElementById('edit-video').value.trim();
-            m.contentType = document.getElementById('edit-type').value;
-            const epStr = document.getElementById('edit-episodes').value.trim();
-            if (m.contentType === 'series' && epStr) { try { m.episodes = JSON.parse(epStr); } catch(e) { this.toast('Invalid episodes JSON!', 'err'); return; } }
+            m.title = document.getElementById("edit-title").value.trim();
+            m.category = document.getElementById("edit-cat").value;
+            m.year = parseInt(document.getElementById("edit-year").value) || 2024;
+            m.duration = document.getElementById("edit-dur").value.trim();
+            m.rating = parseFloat(document.getElementById("edit-rate").value) || 0;
+            m.description = document.getElementById("edit-desc").value.trim();
+            m.videoUrl = document.getElementById("edit-video").value.trim();
+            m.contentType = document.getElementById("edit-type").value;
+            const epStr = document.getElementById("edit-episodes").value.trim();
+            if (m.contentType === "series" && epStr) { try { m.episodes = JSON.parse(epStr); } catch(e) { this.toast("Invalid episodes JSON!", "err"); return; } }
             else { m.episodes = null; }
-            if (this.supReady) { try { await this._updateCloud(id, m); this.toast('Updated in cloud!', 'ok'); } catch(e) { this.toast('Cloud update failed', 'err'); } }
+            if (this.supReady) { try { await this._updateCloud(id, m); this.toast("Updated in cloud!", "ok"); } catch(e) { this.toast("Cloud update failed", "err"); } }
             this.renderAll();
             this.renderAdmin();
             this.closeEdit();
         },
-        
+
         async delContent(id) {
-            if (!confirm('Delete this content?')) return;
-            if (this.supReady) { try { await this._deleteCloud(id); this.toast('Deleted from cloud!', 'ok'); } catch(e) { this.toast('Cloud delete failed', 'err'); } }
+            if (!confirm("Delete this content?")) return;
+            if (this.supReady) { try { await this._deleteCloud(id); this.toast("Deleted from cloud!", "ok"); } catch(e) { this.toast("Cloud delete failed", "err"); } }
             this.movies = this.movies.filter(x => x.id !== id);
             this.renderAll();
             this.renderAdmin();
         },
-        
+
         loadDemo() {
             if (this.movies.length) return;
             this.movies = [
-                { id: 'f1', title: 'Black Adam', category: 'Movies', year: 2022, duration: '125 min', rating: 8.1, description: 'Nearly 5,000 years after he was bestowed with the almighty powers of the Egyptian gods, Black Adam is freed.', poster: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x2v', featured: true, contentType: 'movie' },
-                { id: 'f2', title: 'Avatar: The Way of Water', category: 'Movies', year: 2022, duration: '192 min', rating: 9.2, description: 'Jake Sully lives with his newfound family formed on the extrasolar moon Pandora.', poster: 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=800&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x2w', featured: true, contentType: 'movie' },
-                { id: 'f3', title: 'John Wick: Chapter 4', category: 'Movies', year: 2023, duration: '169 min', rating: 9.0, description: 'John Wick uncovers a path to defeating The High Table.', poster: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x2x', featured: true, contentType: 'movie' },
-                { id: 'f4', title: 'Attack on Titan Final', category: 'Anime', year: 2023, duration: '24 min', rating: 9.5, description: "Humanity's last stand against the Titans reaches its epic conclusion.", poster: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x2y', featured: true, contentType: 'series', episodes: [
-                    { ep: 1, title: 'The Rumbling', video: 'https://www.dailymotion.com/video/x8z5x2y', duration: '24:00' },
-                    { ep: 2, title: 'Sinners', video: 'https://www.dailymotion.com/video/x8z5x3a', duration: '24:00' },
-                    { ep: 3, title: 'The Final Battle', video: 'https://www.dailymotion.com/video/x8z5x3b', duration: '24:00' }
+                { id: "f1", title: "Black Adam", category: "Movies", year: 2022, duration: "125 min", rating: 8.1, description: "Nearly 5,000 years after he was bestowed with the almighty powers of the Egyptian gods, Black Adam is freed.", poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x2v", featured: true, contentType: "movie" },
+                { id: "f2", title: "Avatar: The Way of Water", category: "Movies", year: 2022, duration: "192 min", rating: 9.2, description: "Jake Sully lives with his newfound family formed on the extrasolar moon Pandora.", poster: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=800&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x2w", featured: true, contentType: "movie" },
+                { id: "f3", title: "John Wick: Chapter 4", category: "Movies", year: 2023, duration: "169 min", rating: 9.0, description: "John Wick uncovers a path to defeating The High Table.", poster: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x2x", featured: true, contentType: "movie" },
+                { id: "f4", title: "Attack on Titan Final", category: "Anime", year: 2023, duration: "24 min", rating: 9.5, description: "Humanity last stand against the Titans reaches its epic conclusion.", poster: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x2y", featured: true, contentType: "series", episodes: [
+                    { ep: 1, title: "The Rumbling", video: "https://www.dailymotion.com/video/x8z5x2y", duration: "24:00" },
+                    { ep: 2, title: "Sinners", video: "https://www.dailymotion.com/video/x8z5x3a", duration: "24:00" },
+                    { ep: 3, title: "The Final Battle", video: "https://www.dailymotion.com/video/x8z5x3b", duration: "24:00" }
                 ]},
-                { id: 'f5', title: 'The Flash: Season 9', category: 'Web Series', year: 2023, duration: '43 min', rating: 7.8, description: 'After being struck by lightning, Barry Allen wakes up to discover super speed.', poster: 'https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=800&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x2z', featured: true, contentType: 'series', episodes: [
-                    { ep: 1, title: 'Wednesday Ever After', video: 'https://www.dailymotion.com/video/x8z5x2z', duration: '43:00' },
-                    { ep: 2, title: 'Hear No Evil', video: 'https://www.dailymotion.com/video/x8z5x4a', duration: '43:00' }
+                { id: "f5", title: "The Flash: Season 9", category: "Web Series", year: 2023, duration: "43 min", rating: 7.8, description: "After being struck by lightning, Barry Allen wakes up to discover super speed.", poster: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=800&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x2z", featured: true, contentType: "series", episodes: [
+                    { ep: 1, title: "Wednesday Ever After", video: "https://www.dailymotion.com/video/x8z5x2z", duration: "43:00" },
+                    { ep: 2, title: "Hear No Evil", video: "https://www.dailymotion.com/video/x8z5x4a", duration: "43:00" }
                 ]},
-                { id: 'f6', title: 'Solo Leveling', category: 'Anime', year: 2024, duration: '24 min', rating: 9.1, description: 'The weakest hunter becomes the strongest after a mysterious event.', poster: 'https://images.unsplash.com/photo-1618336753974-aae8e04506aa?w=800&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x3e', featured: true, contentType: 'series', episodes: [
-                    { ep: 1, title: 'The Weakest Hunter', video: 'https://www.dailymotion.com/video/x8z5x3e', duration: '24:00' },
-                    { ep: 2, title: 'Double Dungeon', video: 'https://www.dailymotion.com/video/x8z5x4b', duration: '24:00' }
+                { id: "f6", title: "Solo Leveling", category: "Anime", year: 2024, duration: "24 min", rating: 9.1, description: "The weakest hunter becomes the strongest after a mysterious event.", poster: "https://images.unsplash.com/photo-1618336753974-aae8e04506aa?w=800&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x3e", featured: true, contentType: "series", episodes: [
+                    { ep: 1, title: "The Weakest Hunter", video: "https://www.dailymotion.com/video/x8z5x3e", duration: "24:00" },
+                    { ep: 2, title: "Double Dungeon", video: "https://www.dailymotion.com/video/x8z5x4b", duration: "24:00" }
                 ]},
-                { id: 'f7', title: 'The Glory', category: 'Korean Drama', year: 2023, duration: '60 min', rating: 8.8, description: 'A woman seeks revenge against her childhood bullies.', poster: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x3f', featured: true, contentType: 'series', episodes: [
-                    { ep: 1, title: 'Episode 1', video: 'https://www.dailymotion.com/video/x8z5x3f', duration: '60:00' },
-                    { ep: 2, title: 'Episode 2', video: 'https://www.dailymotion.com/video/x8z5x4c', duration: '60:00' }
+                { id: "f7", title: "The Glory", category: "Korean Drama", year: 2023, duration: "60 min", rating: 8.8, description: "A woman seeks revenge against her childhood bullies.", poster: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x3f", featured: true, contentType: "series", episodes: [
+                    { ep: 1, title: "Episode 1", video: "https://www.dailymotion.com/video/x8z5x3f", duration: "60:00" },
+                    { ep: 2, title: "Episode 2", video: "https://www.dailymotion.com/video/x8z5x4c", duration: "60:00" }
                 ]},
-                { id: 'f8', title: 'Godzilla vs. Kong', category: 'Movies', year: 2021, duration: '113 min', rating: 8.0, description: 'The epic next chapter in the Monsterverse.', poster: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x3g', featured: true, contentType: 'movie' },
-                { id: 'f9', title: 'Demon Slayer', category: 'Anime', year: 2023, duration: '24 min', rating: 8.9, description: 'Tanjiro continues his journey to become a Hashira.', poster: 'https://images.unsplash.com/photo-1541562232579-512a21360020?w=800&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x3h', featured: true, contentType: 'series', episodes: [
-                    { ep: 1, title: 'Entertainment District', video: 'https://www.dailymotion.com/video/x8z5x3h', duration: '24:00' },
-                    { ep: 2, title: 'Swordsmith Village', video: 'https://www.dailymotion.com/video/x8z5x4d', duration: '24:00' }
+                { id: "f8", title: "Godzilla vs. Kong", category: "Movies", year: 2021, duration: "113 min", rating: 8.0, description: "The epic next chapter in the Monsterverse.", poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x3g", featured: true, contentType: "movie" },
+                { id: "f9", title: "Demon Slayer", category: "Anime", year: 2023, duration: "24 min", rating: 8.9, description: "Tanjiro continues his journey to become a Hashira.", poster: "https://images.unsplash.com/photo-1541562232579-512a21360020?w=800&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x3h", featured: true, contentType: "series", episodes: [
+                    { ep: 1, title: "Entertainment District", video: "https://www.dailymotion.com/video/x8z5x3h", duration: "24:00" },
+                    { ep: 2, title: "Swordsmith Village", video: "https://www.dailymotion.com/video/x8z5x4d", duration: "24:00" }
                 ]},
-                { id: 'f10', title: 'My Demon', category: 'Korean Drama', year: 2024, duration: '70 min', rating: 8.5, description: 'A demon loses his powers and must protect a chaebol heiress.', poster: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x3i', featured: true, contentType: 'series', episodes: [
-                    { ep: 1, title: 'Episode 1', video: 'https://www.dailymotion.com/video/x8z5x3i', duration: '70:00' },
-                    { ep: 2, title: 'Episode 2', video: 'https://www.dailymotion.com/video/x8z5x4e', duration: '70:00' }
+                { id: "f10", title: "My Demon", category: "Korean Drama", year: 2024, duration: "70 min", rating: 8.5, description: "A demon loses his powers and must protect a chaebol heiress.", poster: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x3i", featured: true, contentType: "series", episodes: [
+                    { ep: 1, title: "Episode 1", video: "https://www.dailymotion.com/video/x8z5x3i", duration: "70:00" },
+                    { ep: 2, title: "Episode 2", video: "https://www.dailymotion.com/video/x8z5x4e", duration: "70:00" }
                 ]},
-                { id: 'a1', title: 'Jujutsu Kaisen', category: 'Anime', year: 2023, duration: '24 min', rating: 8.8, description: 'Students fight curses in modern Tokyo.', poster: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x4f', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Ryomen Sukuna', video: 'https://www.dailymotion.com/video/x8z5x4f', duration: '24:00' }] },
-                { id: 'a2', title: 'One Piece', category: 'Anime', year: 2024, duration: '24 min', rating: 9.0, description: 'Monkey D. Luffy searches for the ultimate treasure.', poster: 'https://images.unsplash.com/photo-1541562232579-512a21360020?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x4g', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Romance Dawn', video: 'https://www.dailymotion.com/video/x8z5x4g', duration: '24:00' }] },
-                { id: 'a3', title: 'Black Clover', category: 'Anime', year: 2023, duration: '24 min', rating: 8.3, description: 'A boy without magic aims to become Wizard King.', poster: 'https://images.unsplash.com/photo-1618336753974-aae8e04506aa?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x4h', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Asta and Yuno', video: 'https://www.dailymotion.com/video/x8z5x4h', duration: '24:00' }] },
-                { id: 'a4', title: 'Naruto Shippuden', category: 'Anime', year: 2022, duration: '24 min', rating: 8.7, description: 'Naruto Uzumaki wants to become the strongest ninja.', poster: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x5a', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Homecoming', video: 'https://www.dailymotion.com/video/x8z5x5a', duration: '24:00' }] },
-                { id: 'a5', title: 'Death Note', category: 'Anime', year: 2021, duration: '24 min', rating: 9.2, description: 'A high school student discovers a supernatural notebook.', poster: 'https://images.unsplash.com/photo-1541562232579-512a21360020?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x5b', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Rebirth', video: 'https://www.dailymotion.com/video/x8z5x5b', duration: '24:00' }] },
-                { id: 'a6', title: 'Spy x Family', category: 'Anime', year: 2023, duration: '24 min', rating: 8.6, description: 'A spy must build a fake family for his mission.', poster: 'https://images.unsplash.com/photo-1618336753974-aae8e04506aa?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x5c', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Operation Strix', video: 'https://www.dailymotion.com/video/x8z5x5c', duration: '24:00' }] },
-                { id: 'c1', title: 'Soul Land', category: 'Chinese Anime', year: 2024, duration: '20 min', rating: 8.5, description: 'A martial artist reincarnates with powerful abilities.', poster: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x5d', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Reincarnation', video: 'https://www.dailymotion.com/video/x8z5x5d', duration: '20:00' }, { ep: 2, title: 'Spirit Awakening', video: 'https://www.dailymotion.com/video/x8z5x5e', duration: '20:00' }] },
-                { id: 'c2', title: 'Battle Through Heavens', category: 'Chinese Anime', year: 2023, duration: '22 min', rating: 8.2, description: 'A genius cultivator rises from the ashes.', poster: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x5f', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Fallen Genius', video: 'https://www.dailymotion.com/video/x8z5x5f', duration: '22:00' }] },
-                { id: 'c3', title: 'Perfect World', category: 'Chinese Anime', year: 2024, duration: '20 min', rating: 8.4, description: 'A cultivator reaches perfection through trials.', poster: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x5g', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Bone Inscription', video: 'https://www.dailymotion.com/video/x8z5x5g', duration: '20:00' }] },
-                { id: 'k1', title: 'Vincenzo', category: 'Korean Drama', year: 2023, duration: '80 min', rating: 8.5, description: 'A mafia lawyer seeks justice in Korea.', poster: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x5h', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Episode 1', video: 'https://www.dailymotion.com/video/x8z5x5h', duration: '80:00' }] },
-                { id: 'k2', title: 'Crash Landing on You', category: 'Korean Drama', year: 2023, duration: '70 min', rating: 8.7, description: 'A South Korean heiress crash lands in North Korea.', poster: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x5i', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Episode 1', video: 'https://www.dailymotion.com/video/x8z5x5i', duration: '70:00' }] },
-                { id: 'k3', title: 'Squid Game', category: 'Korean Drama', year: 2021, duration: '60 min', rating: 8.9, description: 'Hundreds of cash-strapped players accept a strange invitation.', poster: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x5j', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Red Light, Green Light', video: 'https://www.dailymotion.com/video/x8z5x5j', duration: '60:00' }] },
-                { id: 'k4', title: 'Kingdom', category: 'Korean Drama', year: 2020, duration: '55 min', rating: 8.4, description: 'In a kingdom defeated by corruption, a mysterious plague spreads.', poster: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x6a', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Episode 1', video: 'https://www.dailymotion.com/video/x8z5x6a', duration: '55:00' }] },
-                { id: 'm1', title: 'Oppenheimer', category: 'Movies', year: 2023, duration: '180 min', rating: 8.6, description: 'The story of J. Robert Oppenheimer and the atomic bomb.', poster: 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x6b', featured: false, contentType: 'movie' },
-                { id: 'm2', title: 'Spider-Verse', category: 'Movies', year: 2023, duration: '140 min', rating: 8.2, description: 'Miles Morales multiverse adventure.', poster: 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x6c', featured: false, contentType: 'movie' },
-                { id: 'm3', title: 'The Batman', category: 'Movies', year: 2022, duration: '176 min', rating: 8.5, description: 'Batman ventures into Gotham City\'s underworld.', poster: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x6d', featured: false, contentType: 'movie' },
-                { id: 'm4', title: 'Top Gun: Maverick', category: 'Movies', year: 2022, duration: '130 min', rating: 8.3, description: 'After thirty years, Maverick is still pushing the envelope.', poster: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x6e', featured: false, contentType: 'movie' },
-                { id: 'm5', title: 'Dune: Part Two', category: 'Movies', year: 2024, duration: '166 min', rating: 8.7, description: 'Paul Atreides unites with Chani and the Fremen.', poster: 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x6f', featured: false, contentType: 'movie' },
-                { id: 'm6', title: 'Kohrra', category: 'Movies', year: 2023, duration: '120 min', rating: 7.9, description: 'An investigation into a murdered NRI leads to unexpected revelations.', poster: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x6g', featured: false, contentType: 'movie' },
-                { id: 'w1', title: 'The Witcher', category: 'Web Series', year: 2023, duration: '60 min', rating: 8.1, description: 'Geralt of Rivia, a mutated monster-hunter for hire.', poster: 'https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x6h', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'The End\'s Beginning', video: 'https://www.dailymotion.com/video/x8z5x6h', duration: '60:00' }] },
-                { id: 'w2', title: 'Stranger Things', category: 'Web Series', year: 2022, duration: '50 min', rating: 8.7, description: 'When a young boy disappears, his friends must confront terrifying forces.', poster: 'https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x6i', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'The Vanishing of Will Byers', video: 'https://www.dailymotion.com/video/x8z5x6i', duration: '50:00' }] },
-                { id: 'w3', title: 'Money Heist', category: 'Web Series', year: 2021, duration: '50 min', rating: 8.3, description: 'A criminal mastermind has a plan to pull off the biggest heist.', poster: 'https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x6j', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Episode 1', video: 'https://www.dailymotion.com/video/x8z5x6j', duration: '50:00' }] },
-                { id: 'w4', title: 'Wednesday', category: 'Web Series', year: 2022, duration: '50 min', rating: 8.1, description: 'Wednesday Addams investigates a murder spree.', poster: 'https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x7a', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Wednesday\'s Child', video: 'https://www.dailymotion.com/video/x8z5x7a', duration: '50:00' }] },
-                { id: 's1', title: 'FIFA World Cup 2022', category: 'Sports', year: 2022, duration: '90 min', rating: 9.0, description: 'The biggest football tournament in the world.', poster: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x7b', featured: false, contentType: 'movie' },
-                { id: 's2', title: 'IPL 2024 Highlights', category: 'Sports', year: 2024, duration: '45 min', rating: 8.5, description: 'Best moments from the Indian Premier League.', poster: 'https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x7c', featured: false, contentType: 'movie' },
-                { id: 's3', title: 'WWE Raw', category: 'Sports', year: 2024, duration: '120 min', rating: 7.8, description: 'Professional wrestling entertainment.', poster: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x7d', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Episode 1', video: 'https://www.dailymotion.com/video/x8z5x7d', duration: '120:00' }] },
-                { id: 's4', title: 'UFC 300', category: 'Sports', year: 2024, duration: '180 min', rating: 8.8, description: 'The biggest UFC event of the year.', poster: 'https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x7e', featured: false, contentType: 'movie' },
-                { id: 's5', title: 'NBA Finals 2024', category: 'Sports', year: 2024, duration: '150 min', rating: 8.6, description: 'The championship series of the NBA.', poster: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x7f', featured: false, contentType: 'movie' },
-                { id: 'x1', title: 'Chainsaw Man', category: 'Anime', year: 2023, duration: '24 min', rating: 8.7, description: 'A devil hunter merges with his pet devil.', poster: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x8a', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Dog & Chainsaw', video: 'https://www.dailymotion.com/video/x8z5x8a', duration: '24:00' }] },
-                { id: 'x2', title: 'Mashle', category: 'Anime', year: 2023, duration: '24 min', rating: 8.0, description: 'A magicless boy in a magic world uses muscles.', poster: 'https://images.unsplash.com/photo-1541562232579-512a21360020?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x8b', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Mash Burnedead', video: 'https://www.dailymotion.com/video/x8z5x8b', duration: '24:00' }] },
-                { id: 'x3', title: 'Blue Lock', category: 'Anime', year: 2023, duration: '24 min', rating: 8.4, description: "Japan's best strikers compete to become the world's best.", poster: 'https://images.unsplash.com/photo-1618336753974-aae8e04506aa?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x8c', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Dream', video: 'https://www.dailymotion.com/video/x8z5x8c', duration: '24:00' }] },
-                { id: 'x4', title: 'Dr. Stone', category: 'Anime', year: 2023, duration: '24 min', rating: 8.5, description: 'A scientific genius rebuilds civilization.', poster: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x8d', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Stone World', video: 'https://www.dailymotion.com/video/x8z5x8d', duration: '24:00' }] },
-                { id: 'x5', title: 'Horimiya', category: 'Anime', year: 2021, duration: '24 min', rating: 8.3, description: 'Two high school students with hidden sides fall in love.', poster: 'https://images.unsplash.com/photo-1541562232579-512a21360020?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x8e', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'A Tiny Happenstance', video: 'https://www.dailymotion.com/video/x8z5x8e', duration: '24:00' }] },
-                { id: 'x6', title: 'Kaguya-sama', category: 'Anime', year: 2022, duration: '24 min', rating: 8.8, description: 'Two geniuses try to make the other confess their love first.', poster: 'https://images.unsplash.com/photo-1618336753974-aae8e04506aa?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x8f', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'I Will Make You Confess', video: 'https://www.dailymotion.com/video/x8z5x8f', duration: '24:00' }] },
-                { id: 'x7', title: 'Your Name', category: 'Movies', year: 2016, duration: '106 min', rating: 9.1, description: 'Two teenagers share a profound, magical connection.', poster: 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x8g', featured: false, contentType: 'movie' },
-                { id: 'x8', title: 'Weathering With You', category: 'Movies', year: 2019, duration: '112 min', rating: 8.7, description: 'A high school boy meets a girl who can control the weather.', poster: 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x8h', featured: false, contentType: 'movie' },
-                { id: 'x9', title: 'Demon Slayer Movie', category: 'Movies', year: 2020, duration: '117 min', rating: 8.9, description: 'Tanjiro and his friends board the Mugen Train.', poster: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x8i', featured: false, contentType: 'movie' },
-                { id: 'x10', title: 'A Silent Voice', category: 'Movies', year: 2016, duration: '130 min', rating: 8.8, description: 'A young man is ostracized after he bullies a deaf girl.', poster: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x8j', featured: false, contentType: 'movie' },
-                { id: 'x11', title: 'I Want to Eat Your Pancreas', category: 'Movies', year: 2018, duration: '109 min', rating: 8.5, description: 'An aloof boy finds a diary belonging to his popular classmate.', poster: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x9a', featured: false, contentType: 'movie' },
-                { id: 'x12', title: '5 Centimeters per Second', category: 'Movies', year: 2007, duration: '63 min', rating: 8.2, description: 'Told in three interconnected segments, we follow a young man.', poster: 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x9b', featured: false, contentType: 'movie' },
-                { id: 'x13', title: 'Violet Evergarden', category: 'Anime', year: 2018, duration: '24 min', rating: 8.9, description: 'A soldier becomes an Auto Memory Doll.', poster: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x9c', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'I Love You', video: 'https://www.dailymotion.com/video/x8z5x9c', duration: '24:00' }] },
-                { id: 'x14', title: 'Steins;Gate', category: 'Anime', year: 2011, duration: '24 min', rating: 9.1, description: 'A mad scientist discovers time travel through a microwave.', poster: 'https://images.unsplash.com/photo-1541562232579-512a21360020?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x9d', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Turning Point', video: 'https://www.dailymotion.com/video/x8z5x9d', duration: '24:00' }] },
-                { id: 'x15', title: 'Fullmetal Alchemist', category: 'Anime', year: 2009, duration: '24 min', rating: 9.3, description: 'Two brothers search for the Philosopher\'s Stone.', poster: 'https://images.unsplash.com/photo-1618336753974-aae8e04506aa?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x9e', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Fullmetal Alchemist', video: 'https://www.dailymotion.com/video/x8z5x9e', duration: '24:00' }] },
-                { id: 'x16', title: 'Hunter x Hunter', category: 'Anime', year: 2011, duration: '24 min', rating: 9.0, description: 'A young boy sets out to become a Hunter.', poster: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x9f', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Departure x And x Friends', video: 'https://www.dailymotion.com/video/x8z5x9f', duration: '24:00' }] },
-                { id: 'x17', title: 'Tokyo Revengers', category: 'Anime', year: 2021, duration: '24 min', rating: 8.4, description: 'A young man travels back in time to save his girlfriend.', poster: 'https://images.unsplash.com/photo-1541562232579-512a21360020?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x9g', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Reborn', video: 'https://www.dailymotion.com/video/x8z5x9g', duration: '24:00' }] },
-                { id: 'x18', title: 'Vinland Saga', category: 'Anime', year: 2019, duration: '24 min', rating: 8.8, description: 'A young Viking seeks revenge for his father\'s murder.', poster: 'https://images.unsplash.com/photo-1618336753974-aae8e04506aa?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x9h', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'Somewhere Not Here', video: 'https://www.dailymotion.com/video/x8z5x9h', duration: '24:00' }] },
-                { id: 'x19', title: 'Made in Abyss', category: 'Anime', year: 2017, duration: '24 min', rating: 8.7, description: 'A young girl descends into a mysterious abyss.', poster: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x9i', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'The City of the Great Pit', video: 'https://www.dailymotion.com/video/x8z5x9i', duration: '24:00' }] },
-                { id: 'x20', title: 'Re:Zero', category: 'Anime', year: 2016, duration: '24 min', rating: 8.6, description: 'A shut-in is transported to another world and discovers he can rewind time.', poster: 'https://images.unsplash.com/photo-1541562232579-512a21360020?w=300&h=450&fit=crop', videoUrl: 'https://www.dailymotion.com/video/x8z5x9j', featured: false, contentType: 'series', episodes: [{ ep: 1, title: 'The End of the Beginning', video: 'https://www.dailymotion.com/video/x8z5x9j', duration: '24:00' }] }
+                { id: "a1", title: "Jujutsu Kaisen", category: "Anime", year: 2023, duration: "24 min", rating: 8.8, description: "Students fight curses in modern Tokyo.", poster: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x4f", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Ryomen Sukuna", video: "https://www.dailymotion.com/video/x8z5x4f", duration: "24:00" }] },
+                { id: "a2", title: "One Piece", category: "Anime", year: 2024, duration: "24 min", rating: 9.0, description: "Monkey D. Luffy searches for the ultimate treasure.", poster: "https://images.unsplash.com/photo-1541562232579-512a21360020?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x4g", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Romance Dawn", video: "https://www.dailymotion.com/video/x8z5x4g", duration: "24:00" }] },
+                { id: "a3", title: "Black Clover", category: "Anime", year: 2023, duration: "24 min", rating: 8.3, description: "A boy without magic aims to become Wizard King.", poster: "https://images.unsplash.com/photo-1618336753974-aae8e04506aa?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x4h", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Asta and Yuno", video: "https://www.dailymotion.com/video/x8z5x4h", duration: "24:00" }] },
+                { id: "a4", title: "Naruto Shippuden", category: "Anime", year: 2022, duration: "24 min", rating: 8.7, description: "Naruto Uzumaki wants to become the strongest ninja.", poster: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x5a", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Homecoming", video: "https://www.dailymotion.com/video/x8z5x5a", duration: "24:00" }] },
+                { id: "a5", title: "Death Note", category: "Anime", year: 2021, duration: "24 min", rating: 9.2, description: "A high school student discovers a supernatural notebook.", poster: "https://images.unsplash.com/photo-1541562232579-512a21360020?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x5b", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Rebirth", video: "https://www.dailymotion.com/video/x8z5x5b", duration: "24:00" }] },
+                { id: "a6", title: "Spy x Family", category: "Anime", year: 2023, duration: "24 min", rating: 8.6, description: "A spy must build a fake family for his mission.", poster: "https://images.unsplash.com/photo-1618336753974-aae8e04506aa?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x5c", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Operation Strix", video: "https://www.dailymotion.com/video/x8z5x5c", duration: "24:00" }] },
+                { id: "c1", title: "Soul Land", category: "Chinese Anime", year: 2024, duration: "20 min", rating: 8.5, description: "A martial artist reincarnates with powerful abilities.", poster: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x5d", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Reincarnation", video: "https://www.dailymotion.com/video/x8z5x5d", duration: "20:00" }, { ep: 2, title: "Spirit Awakening", video: "https://www.dailymotion.com/video/x8z5x5e", duration: "20:00" }] },
+                { id: "c2", title: "Battle Through Heavens", category: "Chinese Anime", year: 2023, duration: "22 min", rating: 8.2, description: "A genius cultivator rises from the ashes.", poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x5f", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Fallen Genius", video: "https://www.dailymotion.com/video/x8z5x5f", duration: "22:00" }] },
+                { id: "c3", title: "Perfect World", category: "Chinese Anime", year: 2024, duration: "20 min", rating: 8.4, description: "A cultivator reaches perfection through trials.", poster: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x5g", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Bone Inscription", video: "https://www.dailymotion.com/video/x8z5x5g", duration: "20:00" }] },
+                { id: "k1", title: "Vincenzo", category: "Korean Drama", year: 2023, duration: "80 min", rating: 8.5, description: "A mafia lawyer seeks justice in Korea.", poster: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x5h", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Episode 1", video: "https://www.dailymotion.com/video/x8z5x5h", duration: "80:00" }] },
+                { id: "k2", title: "Crash Landing on You", category: "Korean Drama", year: 2023, duration: "70 min", rating: 8.7, description: "A South Korean heiress crash lands in North Korea.", poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x5i", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Episode 1", video: "https://www.dailymotion.com/video/x8z5x5i", duration: "70:00" }] },
+                { id: "k3", title: "Squid Game", category: "Korean Drama", year: 2021, duration: "60 min", rating: 8.9, description: "Hundreds of cash-strapped players accept a strange invitation.", poster: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x5j", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Red Light, Green Light", video: "https://www.dailymotion.com/video/x8z5x5j", duration: "60:00" }] },
+                { id: "k4", title: "Kingdom", category: "Korean Drama", year: 2020, duration: "55 min", rating: 8.4, description: "In a kingdom defeated by corruption, a mysterious plague spreads.", poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x6a", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Episode 1", video: "https://www.dailymotion.com/video/x8z5x6a", duration: "55:00" }] },
+                { id: "m1", title: "Oppenheimer", category: "Movies", year: 2023, duration: "180 min", rating: 8.6, description: "The story of J. Robert Oppenheimer and the atomic bomb.", poster: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x6b", featured: false, contentType: "movie" },
+                { id: "m2", title: "Spider-Verse", category: "Movies", year: 2023, duration: "140 min", rating: 8.2, description: "Miles Morales multiverse adventure.", poster: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x6c", featured: false, contentType: "movie" },
+                { id: "m3", title: "The Batman", category: "Movies", year: 2022, duration: "176 min", rating: 8.5, description: "Batman ventures into Gotham City underworld.", poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x6d", featured: false, contentType: "movie" },
+                { id: "m4", title: "Top Gun: Maverick", category: "Movies", year: 2022, duration: "130 min", rating: 8.3, description: "After thirty years, Maverick is still pushing the envelope.", poster: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x6e", featured: false, contentType: "movie" },
+                { id: "m5", title: "Dune: Part Two", category: "Movies", year: 2024, duration: "166 min", rating: 8.7, description: "Paul Atreides unites with Chani and the Fremen.", poster: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x6f", featured: false, contentType: "movie" },
+                { id: "m6", title: "Kohrra", category: "Movies", year: 2023, duration: "120 min", rating: 7.9, description: "An investigation into a murdered NRI leads to unexpected revelations.", poster: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x6g", featured: false, contentType: "movie" },
+                { id: "w1", title: "The Witcher", category: "Web Series", year: 2023, duration: "60 min", rating: 8.1, description: "Geralt of Rivia, a mutated monster-hunter for hire.", poster: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x6h", featured: false, contentType: "series", episodes: [{ ep: 1, title: "The Ends Beginning", video: "https://www.dailymotion.com/video/x8z5x6h", duration: "60:00" }] },
+                { id: "w2", title: "Stranger Things", category: "Web Series", year: 2022, duration: "50 min", rating: 8.7, description: "When a young boy disappears, his friends must confront terrifying forces.", poster: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x6i", featured: false, contentType: "series", episodes: [{ ep: 1, title: "The Vanishing of Will Byers", video: "https://www.dailymotion.com/video/x8z5x6i", duration: "50:00" }] },
+                { id: "w3", title: "Money Heist", category: "Web Series", year: 2021, duration: "50 min", rating: 8.3, description: "A criminal mastermind has a plan to pull off the biggest heist.", poster: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x6j", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Episode 1", video: "https://www.dailymotion.com/video/x8z5x6j", duration: "50:00" }] },
+                { id: "w4", title: "Wednesday", category: "Web Series", year: 2022, duration: "50 min", rating: 8.1, description: "Wednesday Addams investigates a murder spree.", poster: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x7a", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Wednesday Child", video: "https://www.dailymotion.com/video/x8z5x7a", duration: "50:00" }] },
+                { id: "s1", title: "FIFA World Cup 2022", category: "Sports", year: 2022, duration: "90 min", rating: 9.0, description: "The biggest football tournament in the world.", poster: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x7b", featured: false, contentType: "movie" },
+                { id: "s2", title: "IPL 2024 Highlights", category: "Sports", year: 2024, duration: "45 min", rating: 8.5, description: "Best moments from the Indian Premier League.", poster: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x7c", featured: false, contentType: "movie" },
+                { id: "s3", title: "WWE Raw", category: "Sports", year: 2024, duration: "120 min", rating: 7.8, description: "Professional wrestling entertainment.", poster: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x7d", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Episode 1", video: "https://www.dailymotion.com/video/x8z5x7d", duration: "120:00" }] },
+                { id: "s4", title: "UFC 300", category: "Sports", year: 2024, duration: "180 min", rating: 8.8, description: "The biggest UFC event of the year.", poster: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x7e", featured: false, contentType: "movie" },
+                { id: "s5", title: "NBA Finals 2024", category: "Sports", year: 2024, duration: "150 min", rating: 8.6, description: "The championship series of the NBA.", poster: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x7f", featured: false, contentType: "movie" },
+                { id: "x1", title: "Chainsaw Man", category: "Anime", year: 2023, duration: "24 min", rating: 8.7, description: "A devil hunter merges with his pet devil.", poster: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x8a", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Dog & Chainsaw", video: "https://www.dailymotion.com/video/x8z5x8a", duration: "24:00" }] },
+                { id: "x2", title: "Mashle", category: "Anime", year: 2023, duration: "24 min", rating: 8.0, description: "A magicless boy in a magic world uses muscles.", poster: "https://images.unsplash.com/photo-1541562232579-512a21360020?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x8b", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Mash Burnedead", video: "https://www.dailymotion.com/video/x8z5x8b", duration: "24:00" }] },
+                { id: "x3", title: "Blue Lock", category: "Anime", year: 2023, duration: "24 min", rating: 8.4, description: "Japan best strikers compete to become the worlds best.", poster: "https://images.unsplash.com/photo-1618336753974-aae8e04506aa?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x8c", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Dream", video: "https://www.dailymotion.com/video/x8z5x8c", duration: "24:00" }] },
+                { id: "x4", title: "Dr. Stone", category: "Anime", year: 2023, duration: "24 min", rating: 8.5, description: "A scientific genius rebuilds civilization.", poster: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x8d", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Stone World", video: "https://www.dailymotion.com/video/x8z5x8d", duration: "24:00" }] },
+                { id: "x5", title: "Horimiya", category: "Anime", year: 2021, duration: "24 min", rating: 8.3, description: "Two high school students with hidden sides fall in love.", poster: "https://images.unsplash.com/photo-1541562232579-512a21360020?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x8e", featured: false, contentType: "series", episodes: [{ ep: 1, title: "A Tiny Happenstance", video: "https://www.dailymotion.com/video/x8z5x8e", duration: "24:00" }] },
+                { id: "x6", title: "Kaguya-sama", category: "Anime", year: 2022, duration: "24 min", rating: 8.8, description: "Two geniuses try to make the other confess their love first.", poster: "https://images.unsplash.com/photo-1618336753974-aae8e04506aa?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x8f", featured: false, contentType: "series", episodes: [{ ep: 1, title: "I Will Make You Confess", video: "https://www.dailymotion.com/video/x8z5x8f", duration: "24:00" }] },
+                { id: "x7", title: "Your Name", category: "Movies", year: 2016, duration: "106 min", rating: 9.1, description: "Two teenagers share a profound, magical connection.", poster: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x8g", featured: false, contentType: "movie" },
+                { id: "x8", title: "Weathering With You", category: "Movies", year: 2019, duration: "112 min", rating: 8.7, description: "A high school boy meets a girl who can control the weather.", poster: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x8h", featured: false, contentType: "movie" },
+                { id: "x9", title: "Demon Slayer Movie", category: "Movies", year: 2020, duration: "117 min", rating: 8.9, description: "Tanjiro and his friends board the Mugen Train.", poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x8i", featured: false, contentType: "movie" },
+                { id: "x10", title: "A Silent Voice", category: "Movies", year: 2016, duration: "130 min", rating: 8.8, description: "A young man is ostracized after he bullies a deaf girl.", poster: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x8j", featured: false, contentType: "movie" },
+                { id: "x11", title: "I Want to Eat Your Pancreas", category: "Movies", year: 2018, duration: "109 min", rating: 8.5, description: "An aloof boy finds a diary belonging to his popular classmate.", poster: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x9a", featured: false, contentType: "movie" },
+                { id: "x12", title: "5 Centimeters per Second", category: "Movies", year: 2007, duration: "63 min", rating: 8.2, description: "Told in three interconnected segments, we follow a young man.", poster: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x9b", featured: false, contentType: "movie" },
+                { id: "x13", title: "Violet Evergarden", category: "Anime", year: 2018, duration: "24 min", rating: 8.9, description: "A soldier becomes an Auto Memory Doll.", poster: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x9c", featured: false, contentType: "series", episodes: [{ ep: 1, title: "I Love You", video: "https://www.dailymotion.com/video/x8z5x9c", duration: "24:00" }] },
+                { id: "x14", title: "Steins;Gate", category: "Anime", year: 2011, duration: "24 min", rating: 9.1, description: "A mad scientist discovers time travel through a microwave.", poster: "https://images.unsplash.com/photo-1541562232579-512a21360020?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x9d", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Turning Point", video: "https://www.dailymotion.com/video/x8z5x9d", duration: "24:00" }] },
+                { id: "x15", title: "Fullmetal Alchemist", category: "Anime", year: 2009, duration: "24 min", rating: 9.3, description: "Two brothers search for the Philosophers Stone.", poster: "https://images.unsplash.com/photo-1618336753974-aae8e04506aa?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x9e", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Fullmetal Alchemist", video: "https://www.dailymotion.com/video/x8z5x9e", duration: "24:00" }] },
+                { id: "x16", title: "Hunter x Hunter", category: "Anime", year: 2011, duration: "24 min", rating: 9.0, description: "A young boy sets out to become a Hunter.", poster: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x9f", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Departure And Friends", video: "https://www.dailymotion.com/video/x8z5x9f", duration: "24:00" }] },
+                { id: "x17", title: "Tokyo Revengers", category: "Anime", year: 2021, duration: "24 min", rating: 8.4, description: "A young man travels back in time to save his girlfriend.", poster: "https://images.unsplash.com/photo-1541562232579-512a21360020?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x9g", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Reborn", video: "https://www.dailymotion.com/video/x8z5x9g", duration: "24:00" }] },
+                { id: "x18", title: "Vinland Saga", category: "Anime", year: 2019, duration: "24 min", rating: 8.8, description: "A young Viking seeks revenge for his fathers murder.", poster: "https://images.unsplash.com/photo-1618336753974-aae8e04506aa?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x9h", featured: false, contentType: "series", episodes: [{ ep: 1, title: "Somewhere Not Here", video: "https://www.dailymotion.com/video/x8z5x9h", duration: "24:00" }] },
+                { id: "x19", title: "Made in Abyss", category: "Anime", year: 2017, duration: "24 min", rating: 8.7, description: "A young girl descends into a mysterious abyss.", poster: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x9i", featured: false, contentType: "series", episodes: [{ ep: 1, title: "The City of the Great Pit", video: "https://www.dailymotion.com/video/x8z5x9i", duration: "24:00" }] },
+                { id: "x20", title: "Re:Zero", category: "Anime", year: 2016, duration: "24 min", rating: 8.6, description: "A shut-in is transported to another world and discovers he can rewind time.", poster: "https://images.unsplash.com/photo-1541562232579-512a21360020?w=300&h=450&fit=crop", videoUrl: "https://www.dailymotion.com/video/x8z5x9j", featured: false, contentType: "series", episodes: [{ ep: 1, title: "The End of the Beginning", video: "https://www.dailymotion.com/video/x8z5x9j", duration: "24:00" }] }
             ];
             this.heroSlides = this.movies.filter(m => m.featured).slice(0, 10);
             if (!this.heroSlides.length) this.heroSlides = this.movies.slice(0, 10);
-            console.log('Loaded ' + this.movies.length + ' demo items');
+            console.log("Loaded " + this.movies.length + " demo items");
         }
     };
 
-    document.addEventListener('DOMContentLoaded', () => app.init());
+    document.addEventListener("DOMContentLoaded", () => app.init());
     window.app = app;
 })();
 </script>
